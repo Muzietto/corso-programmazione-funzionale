@@ -1,0 +1,19 @@
+May 7, 2014
+
+1. Extend the signature of Queue with the following operations
+
+- isEmpty qs, which checks if qs is empty
+- size qs,  computing the length of qs
+- ofList xs, which builds a queue starting from a given list
+- toList qs, which turns a queue into the corresponding list
+- put_list xs qs, which adds the elements of a list xs to a queue qs,
+  returning the resulting queue
+
+2. Implement those operations in the pairs of list representation
+
+3. Create a dll library, say Q.dll
+
+4. Rewrite the code for breadth-first function so that it does *not*
+use lists but only queue operation as provided by the library Q.dll
+analogously to what we did for depth-first and Stack. This is not
+completely trivial, so do not get discouraged. 

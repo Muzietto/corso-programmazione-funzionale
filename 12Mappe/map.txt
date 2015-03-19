@@ -1,0 +1,176 @@
+  RAPPRESENTAZIONE DI MAPPE (MAP LIBRARY)
+  =======================================
+
+Una mappa m da un insieme A a un insieme B e' un insieme finito di coppie
+
+     m  =  { (a0,b0), (a1,b1), .... , (an,bn) } 
+
+tale che:
+
+-  gli elementi a0, a1, ...,  an (chiavi) appartengono ad A e sono tutti distinti fra loro
+-  gli elementi b0, b1, ...,  bn (valori) appartengono a B.   
+
+L'insieme  m e' quindi un sottoinsieme finito del prodotto cartesiano A x B;
+m rappresenta la funzione finita da A in B tale che:
+
+  m(a0) = b0    // b0 e' il valore della chiave a0
+  m(a1) = b1
+  ...
+  m(an) = bn
+
+Il dominio di m e' il sottoinsieme di A su cui m e' definita:
+
+  Dom(m) = { a0, a1, ... , an}
+
+
+Esempio
+
+L'insieme
+
+  m1 = { ("Bianchi",25) , ("Rossi",28) , ("Verdi",25) }
+
+definisce la mappa (mappa da studente a voto) tale che:
+
+   m1("Bianchi") = 25
+   m1("Rossi")   = 28
+   m1("Verdi")   = 25     
+
+Dom(m1) = { "Bianchi", "Rossi", "Verdi" }
+
+La mappa definita da
+
+   m2 = { ("Rossi",28) ,  ("Verdi",25) , ("Bianchi",25) }
+
+e' uguale a m1.
+
+L'insieme
+
+ m3 =  { ("Rossi",28) ,  ("Bianchi",25) , ("Verdi",25) , ("Rossi",29)  }
+
+non definisce alcuna mappa (alla chiave "Rossi" sono assegnati due valori).
+
+
+Per rappresentare una mappa usiamo il tipo polimorfo 
+
+    Map<'a,'b>   when 'a : comparison  
+
+dove 'a e' il tipo delle chiavi, 'b il tipo dei valori.
+
+
+Principali funzioni definite su mappe (Map Library)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+*  Map.empty : Map<'a,'b>
+
+   Costante che definisce la mappa vuota. 
+
+
+*  Map.ofList : ('a *' b) list ->  Map<'a,'b> 
+   
+   Data la lista di coppie  [(a0,b0) ; ... ; ( an,bn)] : ('a * 'b )
+
+       Map.ofList  [(a0,b0) ; ... ; ( an,bn)] 
+
+    e' la mappa  {(a0,b0), (a1,b1), ... , (an,bn)}.
+    Le chiavi a0, a1, a2, ... devono essere distinte
+
+Esempio:
+  
+let map1 =  Map.ofList[("Rossi",28) ; ("Bianchi",25);   ("Verdi",25) ] ;;  
+//  val map1 : Map<string,int> = map [("Bianchi", 25); ("Rossi", 28); ("Verdi", 25)]
+//  notare che le chiavi sono elencate in ordine alfabetico
+
+* Map.toList :  Map<'a,'b>  ->  ('a *' b) list
+
+  E' l'operazione inversa di  ofList. Data una mappa m : Map<a',b'> 
+  
+     Map.toList m
+
+  e' la lista delle coppie (a0,b0), (a1,b1), ... che definiscono m.
+
+Esempio:
+
+Map.toList map1 ;;
+// val it : (string * int) list = [("Bianchi", 25); ("Rossi", 28); ("Verdi", 25)]
+
+
+*  Map.add: 'a -> 'b -> Map<'a,'b> -> Map<'a,'b>
+
+   Aggiunge a una mappa una coppia (a,b).
+   Piu' precisamente, data  una mappa m :  Map<'a,'b>,
+
+         add a b m  
+
+   e' la mappa m' tale che:
+    
+    - m'(a) = m(b)   // se m e' definita su a, il valore di a e' ridefinito
+    - m'(k) = m(k)   per ogni chiave k diversa da a
+                
+
+Esempio:
+
+let map2 = Map.add "Bianchini" 24 map1 ;;
+// val map2 : Map<string,int> = map [("Bianchi", 25); ("Bianchini", 24); ("Rossi", 28); ("Verdi", 25)]
+
+let map3 = Map.add "Rossi" 27 map2 ;;
+//val map3 : Map<string,int> = map [("Bianchi", 25); ("Bianchini", 24); ("Rossi", 27); ("Verdi", 25)]
+// il voto di "Rossi" e' sovrascritto.
+
+*  Map.containsKey: 'a -> Map<'a,'b> -> bool, 
+
+    Dati a : a'  e   m : Map<'a,'b>
+  
+      Map.containsKey a m = true    se a e' in Dom(m)
+                            false   altrimenti    
+
+Esempio:
+
+Map.containsKey "Bianchi" map1 ;;  // true
+Map.containsKey "Bianco"  map1 ;;  // false
+
+
+* Map.find: 'a -> Map<'a,'b> -> b
+  
+  Dati a : 'a  e  m : Map<'a,'b>
+
+      Map.find a m  = b  se m(a) = b  
+      
+  Solleva una eccezione se a non appartiene a Dom(m).
+
+Esempio:
+
+Map.find "Bianchi" map1 ;;  // 25
+Map.find "Bianco"  map1 ;;  // solleva eccezione
+
+
+* Map.tryFind: 'a -> Map<'a,'b> -> 'b option
+  
+  Simile a find, ma usa option type anziche' le eccezioni
+
+  Map.tryFfind a m  = Some b   se  m(a) = b
+                      None     se a non appartiene a Dom(m)
+
+Esempio:
+
+Map.find "Bianchi" map1 ;;   //  Some 25
+Map.find "Bianco"  map1 ;;   //  None
+
+
+Altre funzioni
+^^^^^^^^^^^^^^
+
+La libreria Map dispone anche delle seguenti funzioni, 
+analoghe alle omonime funzioni della libreria List (vedere i dettagli sul libro).
+
+
+*  Map.map : ('a -> 'b -> 'c) -> Map<'a,'b> -> Map<'a,'c>
+
+*  Map.filter : ('a -> 'b -> bool) -> Map<'a,'b> -> Map<'a,'b>
+
+*  Map.exists : ('a -> 'b -> bool) -> Map<'a,'b> -> bool
+
+*  Map.forall : ('a -> 'b -> bool) -> Map<'a,'b> -> bool
+
+*  Map.fold :  ('a -> 'b -> 'c -> 'a) -> 'a -> Map<'b,'c> -> 'a
+
+*  Map.foldBack : ('a -> 'b -> 'c -> 'c) -> Map<'a,'b> -> 'c -> 'c

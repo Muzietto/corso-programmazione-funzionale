@@ -1,0 +1,148 @@
+ESERCIZIO 1	
+===========
+
+Consideriamo le definizioni
+
+let f = fun x -> x + 1 ;;
+let g = fun x -> x  +1 ;;
+
+Le funzioni f e g sono uguali?
+Cosa calcola g?
+
+Dare qualche esempio di termine a cui g puo' essere applicata 
+e calcolare il risultato dell'applicazione.
+
+___________________________________________________________
+
+
+ESERCIZIO 2	
+===========
+
+2.1) Definire la funzione map che, data una funzione f e una lista ls aventi tipo
+
+  f : 'a -> 'b      ls :  'a list
+
+l'applicazione  'map f ls'  restituisce la lista di tipo 'b list
+ottenuta applicando a ogni elemento x di ls la funzione f.
+
+In altri termini:
+
+ map  f [ x_0 ; x_1 ; .... ; x_n ]   =   [ f x_0 ; f x_1 ; ... ; f x_n ]
+
+Il tipo di map e':
+
+   map : ('a -> 'b) -> 'a list -> 'b list
+
+2.2) Sia l1 la lista contenente i numeri da 1 a 10.
+
+Applicando map a una opportuna funzione f e alla lista l1 costruire le seguenti liste
+(scrivere f come funzione anonima):
+
+l2 =  [1; 4; 9; 16; 25; 36; 49; 64; 81; 100] // quadrati dei primi 10 numeri
+
+l3 = [(1, "dispari"); (2, "pari"); (3, "dispari"); (4, "pari"); (5, "dispari"); (6, "pari"); 
+      (7, "dispari"); (8, "pari"); (9, "dispari"); (10, "pari")]
+
+2.3) Consideriamo la lista
+
+let names = [ ("Mario", "Rossi") ; ("Anna Maria", "Verdi") ; ("Giuseppe", "Di Gennaro")] ;;
+
+Applicando map a una opportuna funzione e alla lista names, costruire la lista
+ 
+names1 =  ["Dott. Mario Rossi"; "Dott. Anna Maria Verdi"; "Dott. Giuseppe Di Gennaro"]
+
+
+___________________________________________________________
+
+
+ESERCIZIO 3	
+===========
+
+3.1) Definire la funzione filter che  data una funzione pred (predicato)  e una lista ls 
+aventi tipo
+
+  pred : 'a -> bool     ls :  'a list
+
+l'applicazione 'filter pred ls' restituisce la lista di tipo 'a list
+contenente gli elementi di ls che verificano pred.
+
+In  altri termini:
+
+  filter pred ls = lsTrue
+  
+dove lsTrue contiene gli elementi x di ls tali che pred x e' true.
+
+Il tipo di filter e':
+
+ filter: ('a -> bool) -> 'a list -> 'a list
+
+
+3.2) Con una applicazione di filter, costruire la lista dei multipli di 3  minori o uguali a 20.
+
+3.3) Siano date le definizioni
+
+type valutazione = {stud : string;  matr : int ; voto : int};;  
+// tipo che definisce la valutazione di uno studente
+
+let vals = [ {stud="Bianchi"; matr=101 ; voto = 24} ;   {stud="Rossi"; matr=102 ; voto = 15} ;
+             {stud="Verdi"; matr=103 ; voto = 28} ;  {stud="Neri"; matr=104 ; voto = 10} ] ;;
+// lista di valutazioni 
+
+Applicando map, costruire la  lista
+
+voti =  [(101, 24); (102, 15); (103, 28); (104, 10)] 
+// lista delle coppie (matr,voto)
+
+Usare quindi filter per costruire la lista
+
+promossi =  [(101, 24); (103, 28)]  
+// lista di (matr,voto) tale che voto >= 18
+
+Infine, definire la lista dei promossi mediante un'unica espressione, 
+combinando i due passi precedenti con operatore  |> (pipe).
+
+___________________________________________________________
+
+
+ESERCIZIO 4	
+===========
+
+4.1) Definire la funzione filter1 analoga a filter in cui pero'
+
+   filter1 pred ls = ( lsTrue, lsFalse )
+
+dove:
+
+- lsTrue    contiene gli elementi di ls che verificano pred
+- lsFalse   contiene gli elementi di ls che non verificano pred
+
+Il tipo di filter1 e':
+
+   ('a -> bool) -> 'a list -> 'a list * 'a list
+
+4.2) Usando filter1 e le definizioni nell'esercizio precedente, costruire le coppie di liste
+
+p1 =  ( [3; 6; 9; 12; 15; 18] , [1; 2; 4; 5; 7; 8; 10; 11; 13; 14; 16; 17; 19; 20] )
+     // multipli e non-multipli di 3 
+
+p2 =   (  [(101, 24); (103, 28)] , [(102, 15); (104, 10)] )  // promossi, bocciati
+
+___________________________________________________________
+
+
+ESERCIZIO 5	
+===========
+
+Definire la funzione 
+
+     divisori : int -> int list
+
+che, dato un intero n > 0, restituisce la lista dei suoi divisori.
+
+Esempio:
+
+ let d100 =  divisori 100 ;;
+// val d100 : int list = [1; 2; 4; 5; 10; 20; 25; 50; 100]
+
+Usando la funzione divisori, definire la funzione isPrime che determina se un intero  e' primo.
+Notare che e' sufficiente scrivere una espressione booleana.

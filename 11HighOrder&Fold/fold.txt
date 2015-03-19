@@ -1,0 +1,314 @@
+        FOLD SU LISTE
+        =============
+
+In programmazione funzionale la funzione higher-order fold itera l'applicazione 
+di una funzione f sugli elementi di una lista.
+Se la lista e' attraversata da sinistra verso destra si parla di left-fold, altrimenti si ha right-fold.
+
+
+Definizione di left/right-fold
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Siano dati:
+
+-  una funzione f a due argomenti 
+-  una lista ls = [x0; ... ; x(n-1)] 
+-  un valore inizale v0
+
+Il left-fold della lista ls con la funzione f e valore iniziale v0
+e' ottenuto calcolando i valori v1, v2, ... (valori accumulati) nel seguente modo:
+
+  v1 =  f v0 x0
+  v2 =  f v1 x1
+  v3 =  f v2 x2  
+  ....    
+  vn =  f v(n-1) x(n-1)
+
+Il risultato e' il valore vn (se la lista ls e' vuota, il risultato e' il valore iniziale v0).
+
+Il right-fold e' definito in modo analogo, 
+ma gli elementi della lista sono considerati in ordine inverso:
+
+      v1 = f x(n-1) v0 
+      v2 = f x(n-2) v1
+      v3 = f x(n-3) v2
+      ...
+      vn  = f x0 v(n-1)
+
+In F#:
+
+- left-fold    e' implementata dalla funzione List.fold; 
+- right-fold   e' implementato dalla funzione List.foldBack
+
+
+Convenzioni usate
+^^^^^^^^^^^^^^^^^
+
+- 'S (Source type)  e' il tipo degli elementi della lista di input ls
+
+- 'T (Target type)  e' il tipo dei valori accumulati v0, v1, ... 
+
+- La lista in input e'
+ 
+       ls = [x0; ... ; x(n-1)] :  'S list
+  
+-  Prestare attenzione all'ordine dei parametri:
+
+   In left-fold   la funzione f ha tipo  'T -> 'S -> 'T  
+   In right-fold  la funzione f ha tipo  'S -> 'T -> 'T
+
+
+---------------   LEFT-FOLD (List.fold)  ---------------
+
+
+Siano:
+
+  f  : 'T -> 'S -> 'T   // funzione applicata a ogni iterazione
+  v0 : 'T               // valore iniziale
+  ls : 'S list          // lista [ x0 ; ... ; x(n-1) ]
+
+La funzione 
+
+   List.fold : ('T -> 'S -> 'T) -> 'T -> 'S list -> 'T
+
+corrisponde alla funzione fold definita dal seguente pseudo-codice F#:
+
+ let fold f v0 [ x0 ; x1 ; ... ; x(n-1) ] =
+     let  v1 = f v0 x0     
+     let  v2 = f v1 x1
+     let  v3 = f v2 x2
+     ...
+     let vn  = f v(n-1) x(n-1)
+     vn   // valore della funzione (se la lista e' vuota, vn = v0) 
+
+
+v0 --
+     |---f --> v1 --|
+x0 --               |--- f --> v2 --|
+               x1 --|               |-- f --> v3 .
+                               x2 --|             . 
+                                                   .
+                                                     v(n-1) --|
+                                                              |-- f --> vn
+                                                     x(n-1) --|
+
+
+Notare che:
+
+- Gli elementi della lista sono considerati da sinistra verso destra;
+- Il primo argomento di f e' il valore accumulato, il secondo l'elemento corrente della lista.
+
+
+Definizione ricorsiva di fold
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Per definire ricorsivamente fold, si osserva che vn corrisponde 
+al fold della lista [x1 ; ... ; x(n-1)] con la funzione f 
+ma usando come valore iniziale v1.
+
+  vn  = fold f v1  [x1; ... x(n-1)]
+
+Poiche' la lista  [x1; ... x(n-1)] e' piu' piccola della lista ls di partenza,
+la chiamata ricorsiva e' corretta.
+
+let rec fold f  v0  ls =
+    match ls with
+    | [] -> v0
+    | x0 :: xs -> 
+          let v1 = f v0 x0
+          fold f v1 xs   ;; // tail recursion
+
+Ad esempio, supponiamo ls = [x0 ; x1 ; x2] 
+
+  fold f v0 [ x0 ; x1 ; x2]  =  fold f (f v0 x0)  [x1 ; x2]  
+                             =  fold f (f (f v0 x0) x1)  [x2] 
+                             =  fold f (f (f (f v0 x0) x1) x2) []
+                             =  f (f (f v0 x0) x1) x2
+
+In generale:
+
+ fold f v0 [ x0 ; x1 ; ... ; x(n-1) ] =
+     f ( ...  f(f (f v0 x0) x1) x2  ...  ) x(n-1)
+______________________________________________________________________________________________________
+
+
+ESERCIZI
+========
+
+Le funzioni dei seguenti esercizi vanno definite mediante left-fold.
+
+
+1) Definire la funzione sum : int list -> int che somma gli elementi di una lista di interi.
+Suggerimento: accumulare le somme parziali.
+
+Definite la funzione prod: int list -> int che calcola il prodotto degli elementi di una lista di interi.
+
+2) Definire la funzione fact : int -> int che calcola il fattoriale di n usando List.fold sulla lista [1..n].
+
+ Per poter rappresentare  correttamente numeri grandi, usare il tipo uint64;  
+ le costanti numeriche  di tipo uint64  terminano con UL (es., 12UL).
+
+3) Definire la funzione length : 'a list -> int che calcola la lunghezza di una lista generica. 
+Suggerimento: accumulare la lunghezza della parte di lista attraversata.
+
+4) Definire la funzione minList : 'a list -> 'a che calcola il minimo elemento di una lista non vuota generica. 
+Si assume che sul tipo 'a sia definito <.
+
+Usare le funzioni 
+
+  min : ('a -> 'a -> 'a) when 'a : comparison   // calcola il minimo fra due elementi rispetto a <
+  List.head : ('a list -> 'a)   // restituisce la testa di una lista
+
+Suggerimento: accumulare il minimo locale (minimo della parte di lista attraversata).
+
+Esempio: 
+
+let min1 = minList [ 5 ; -4 ; 10 ; -20 ; 3]  // -20
+let min2 = minList [ 1 ; 20 ; 2 ; 4]  // 1
+let min3 = minList [ "bue" ; "cavallo" ; "asino" ; "capra" ] // "asino"
+
+5)  Definire la funzione rev : 'a list -> 'a list che inverte una lista generica.
+
+Suggerimento: accumulare la lista invertita della parte di lista attraversata.
+
+Esempio:
+
+let inv1 = rev [ 1 ..10 ] //  [10; 9; 8; 7; 6; 5; 4; 3; 2; 1]
+let inv2 = rev ["ananas" ; "banane" ; "castagne" ; "datteri" ] //  ["datteri"; "castagne"; "banane"; "ananas"]
+let inv3 = rev [] : int list //  []
+
+
+
+
+
+---------------   RIGHT-FOLD  (List.foldBack)   ---------------
+
+
+Siano:
+
+   f  :  'S -> 'T -> 'T   // funzione applicata a ogni iterazione
+   ls :  'S list          // lista [ x0 ; ... ; x(n-1) ]
+   v0 :  'T               // valore iniziale
+
+La funzione 
+
+  List.foldBack : ('S -> 'T -> 'T) -> 'S list -> 'T -> 'T 
+
+corrisponde alla funzione foldBack definita come segue:
+
+ let foldBack f [ x0 ; x1 ; ... ; x(n-1) ] v0 =
+     let  v1 = f x(n-1) v0 
+     let  v2 = f x(n-2) v1
+     let  v3 = f x(n-3) v2
+     ...
+     let  vn  = f x0 v(n-1)
+     vn   // valore della funzione (se la lista e' vuota, vn=v0) 
+
+                                                                            
+
+                                                                          x0 --|
+                                                        x1 -- |                |--f--> vn
+                                                              |--f--> v(n-1) --|
+                                                      v(n-2)--|  
+                                                     .
+                                                   .   
+                                x(n-3)--|         .
+                x(n-2)--|               |--f--> v3
+x(n-1) --|              |--- f --> v2 --|
+         |---f --> v1 --|
+    v0 --|        
+
+
+Notare che:
+- gli elementi della lista sono considerati da destra verso sinistra
+- il primo argomento di f e' l'elemento corrente della lista, il secondo il valore accumulato
+- in foldBack il valore iniziale v0 e' posto come ultimo argomento
+
+
+Definizione ricorsiva di foldBack
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Il valore v(n-1) corrisponde al foldBack della lista [x1; ... ; x(n-1)] (con funzione f e valore iniziale v0)
+
+   v(n-1) = foldBack f [x1; ... ; x(n-1)]  v0   
+
+Poiche' la lista  [x1; ... x(n-1)] e' piu' piccola della lista ls di partenza,
+la chiamata ricorsiva e' corretta.
+
+ let rec foldBack f ls v0 =
+    match ls with
+    | [] -> v0
+    | x0 :: xs -> 
+        let v' = foldBack f xs v0 // valore di v(n-1)
+        f x0 v' ;;  
+
+Ad esempio, supponiamo ls = [x0 ; x1 ; x2] 
+
+ foldBack f [x0 ; x1 ; x2]  v0 =  f x0  (foldBack f [x1 ; x2] v0)
+                               =  f x0  (f x1 (foldBack f [x2] v0) )
+                               =  f x0  (f x1 (f x2 (foldBack f [] v0)))
+                               =  f x0  (f x1 (f x2 v0) )  
+
+In generale:
+
+foldBack f v0 [ x0 ; x1 ; ... ; x(n-1) ] =
+     f x0 ( f x1 ...   (f x(n-2) (f x(n-1) v0))  ... )
+
+_______________________________________________________________________________________
+
+
+ESERCIZI
+========
+
+
+Le funzioni dei seguenti esercizi vanno definite mediante right-fold.
+
+
+1) Definire la funzione  map : ('a -> 'b) -> 'a list -> 'b list usando List.foldBack
+
+Cosa succede usando  List.fold anziche' List.foldBack?
+
+
+2) Definire la funzione append : 'a list -> 'a list -> 'a list che concatena due liste.
+
+Esempio:
+
+let app1 = append [1 .. 2] [ 3 .. 4] ;;  // [1; 2; 3; 4]
+let app2 = append ['a' .. 'd'] [] ;; //  ['a'; 'b'; 'c'; 'd']
+let app3 = append ["nord" ; "sud"] ["est" ; "ovest"] ;; //  ["nord"; "sud"; "est"; "ovest"]
+
+
+3)  Definire la funzione concat : string list -> string che restituisce
+    la stringa  ottenuta concatenando una lista di stringhe.
+
+Esempio:
+
+let sp = " ";
+let str1 = concat ["Esempio" ; sp ; "di" ; sp; "stringa" ; sp ; sp ; "concatenata"] ;;
+// val str1 : string = "Esempio di stringa  concatenata"
+
+4) Definire la funzione unzip : ('a * 'b) list -> 'a list * 'b list che
+   data la lista di coppie  [(x1,y1) ; (x2,y2) ; ... ; (xn,yn)] 
+   restituisce la coppia di liste  ([x1;...;xn] , [y1;...;yn])
+
+
+Esempio:
+
+let unz1 = unzip [ (1, "Anna") ; (2, "Barbara") ; (3, "Carlo") ; (4, "Davide") ]
+
+// val unz1 : int list * string list = ( [1; 2; 3; 4] , ["Anna"; "Barbara"; "Carlo"; "Davide"] )
+
+
+_______________________________________________________________________________________
+
+
+OSSERVAZIONI FINALI
+===================
+
+In alcuni casi (es., le funzioni sum, prod, fact, length, minList), si puo'
+usare indifferentemente left-fold o right-fold.  
+In tali casi l'uso di left-fold e' preferibile, in quanto left-fold, a differenza di right-fold,
+e' definita tramite tail recursion.
+
+Ci sono invece casi in cui occorre necessariamente usare left-fold
+(es. rev) oppure right-fold (es. map).

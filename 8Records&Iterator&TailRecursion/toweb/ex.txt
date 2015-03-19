@@ -1,0 +1,51 @@
+Parte 1: records
+
+- Completare la versione con records dell'esercizio passato, definendo
+
+1.  media : valv list -> float
+
+
+2.  separaR2 : valv list -> valv list * valv list
+
+- [Opzionale] Ridefinire nell'esercizio della
+  nursery childDes come un record e le relative funzioni number e pay
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Parte 2: iterazione
+
+1. Give a iterative version of this function
+
+let rec pow2 = function
+  | 0 -> 1
+  | n -> 2 * pow2(n-1);;
+
+Hint: to make it work better, use the "bigint" type, that is
+let ipow2 n : bigint = 
+  ...
+
+with the appropriate casting such as (bigint 1).
+
+2. Give an iterative version of the fibonacci function. Again, use bigint
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Parte 3: ADT
+
+1. DEF
+
+i) Introduce a variable binding operator: 'def' similar to F# let
+
+ e ::= ..|  def x=e1 in e2
+
+ for example:	def x = (3 - 5) in x + x 
+
+1. change the datatype expressions to account for the
+new constructor
+
+2. extend the evaluation function to cope with def, according to the
+following rule
+
+env |- e1 >> v1		env + (x -> v1) |- e2 >> v2 
+------------------------------------------------
+	env |- def x=e1 in e2 >> v2

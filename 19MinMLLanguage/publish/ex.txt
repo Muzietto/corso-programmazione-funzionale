@@ -1,0 +1,30 @@
+EXERCISES
+
+
+0. Extend all the functions given to the full MinML language ading
+pairs and let
+
+1. We have used arguments carrying exceptions for a reason.  Write a
+handler for the type checker that pretty prints the error message
+according to the exception raised. For example if tpcheck raise
+(VarNotFound(s,tenv)) you produce the error message
+
+   "Variable <s> not found in enviroment <tenv>"
+
+
+2. In class we first type-checked our expressions and then erased the
+type information to produce a run-time expression. This is quite a bit
+inefficient as it entails two passes on the given program. 
+
+Write a function 
+
+tpcheck_erase : exp -> tenviroment -> (tp * rexp)
+
+which while traversing the expression to perform type checking
+erases the type information from the expression itself, yielding a
+directly the runtime expr:
+
+tpcheck_erase (Fun (("x", Ar(Nat,Nat)),Ap(V "x"), Z)) Map.empty = 
+          (Nat, RFun ("x",RAp(RV "x"),RZ));; 
+
+Hint: you may have to change the type of exceptions

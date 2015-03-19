@@ -1,0 +1,352 @@
+
+ESERCIZI SU ESPRESSIONI REGOLARI	
+================================
+
+All'esame  le espressioni regolari non verranno richieste.
+
+Si raccomanda pero' di svolgere almeno la parte (c) dell'esercizio 3 partendo dalla lista
+
+let listaMieiEsami =
+  [ {nome = "programmazione" ; crediti = 12 ; esito = V 27} ; // voto 27/30
+    {nome = "matematica del continuo" ; crediti = 12 ; esito = NS} ;   // esame non sostenuto
+    {nome = "architettura degli elaboratori I" ; crediti = 6 ; esito = V 24} ;
+    {nome = "algoritmi e strutture dati" ; crediti = 12 ; esito = NS} ; 
+    {nome = "sistemi operativi I" ; crediti = 6 ; esito = V 27} ; 
+    {nome = "basi di dati" ; crediti = 12 ; esito = V 30} ;
+    {nome = "linguaggi formali e automi" ; crediti = 6 ; esito = V 27} ; 
+    {nome = "fisica" ; crediti = 6 ; esito = NS} ; 
+    {nome = "logica matematica" ; crediti = 6 ; esito = L} ;  // voto 30 e lode
+    {nome = "calcolo delle probabilita' e statistica matematica" ; crediti = 6 ; esito = NS} ; 
+    {nome = "matematica del discreto" ; crediti = 6 ; esito = V 25} ; 
+    {nome = "programmazione funzionale" ; crediti = 6 ; esito = L} 
+  ] ;;
+
+
+__________________________________________________________________________________________
+
+
+ESERCIZIO 1
+===========
+
+a) Definire la funzione
+
+  getMatches : string -> Regex -> int -> seq<Match> 
+
+tale che
+
+  getMatches  str ( re : Regex)  pos 
+
+costruisce la sequenza di tutti i match dell'espressione regolare re
+trovati nella stringa str partendo dalla posizione pos (pos >= 0).
+Ricordarsi che il primo carattere di str ha posizione 0.
+
+Suggerimento
+^^^^^^^^^^^^
+
+Usare le informazioni della classe Match fornite dalle property:
+
+- Success : bool  //  il match ha avuto successo?
+- Index   : int   //  posizione di str in cui inizia il match
+- Length  : int   //  lunghezza della sottostringa nel match
+
+NOTA
+====
+
+La funzione getMatches verra' usata anche nei prossimi esercizi.
+
+
+b) Consideriamo l'espressione regolare
+
+let numRe = Regex  "\d+"  ;;
+
+che descrive un intero senza segno (sequenza non vuota di cifre).
+
+
+Siano s1 e s2 le stringhe
+
+let s1 =  "esempi di numeri: 12, -325 e 9876. Altri numeri: +11, 22, -44 , +15 e infine -321."  ;;
+let s2 =  "stringa che non contiene numeri!"    ;;
+
+Applicando getMatches, costruire la sequenza seq1 dei match di numRe in s1.
+Si noti che i match sono 8, corrispondenti alle stringhe
+
+    "12", "325", "9876", "11", "22", "44", "15", "321" 
+  
+Applicando Seq.map, da seq1 estrarre la sequenza delle stringhe corrispondenti ai match
+(usare la property Value della classe Match).
+
+Verificare che invece la stringa s2 non produce nessun match con numRe.
+
+c) Definire l'espressione regolare numSigRe che riconosce numeri interi che possono
+essere preceduti dal segno (+ o -). 
+
+Estrarre i match di numSigRe in s1 procedendo come nel punto precedente.
+I match ottenuti corrispondono alle stringhe
+
+  "12" , "-325" , "9876" , "+11" , "22" , "-44" , "+15" , "-321" 
+
+__________________________________________________________________________________________
+
+
+ESERCIZIO 2
+===========
+
+a) Definire una espressione regolare dateRe che riconosce una data nel formato
+day.month.year, dove  day e month hanno una o due cifre, year ha quattro cifre.
+
+Usando al funzione getMatches dell'esercizio 1, verificare che nella stringa
+
+let dates =
+        "0ggi e' il giorno 14.5.2014" +
+        "Data non valida: 14.5.14" +
+        "Esempi di altre date valide: 1.1.2014, 12.19.2013" +
+        "Esempi di altre date non valide: 1/1/2014, 12\10\2013" ;;
+
+le date riconosciute sono
+
+  "14.5.2014" , "1.1.2014" , "12.19.2013"
+
+Notare che la terza data e' accettata, pur non essendo una data valida.
+I controlli di consistenza dei dati estratti possono essere rinviati 
+a  una analisi successiva.
+
+b) Modificare dateRe in modo che sia possibile estrarre giorno, mese e anno della data
+(raggruppare fra parentesi tonde giorno, mese e anno).
+
+Rappresentiamo una data usando il tipo
+
+ type date =  { day:int ; month:int ; year:int } ;;
+
+Definire la funzione 
+
+  getDates :  string -> seq<date>
+
+che costruisce la sequenza ottenenuta estraendo  tutte le date contenute in una sequenza.
+
+Verificare che 
+
+ getDates dates |> Seq.toList ;;
+
+produca la lista
+ 
+  [
+      { day = 14 ; month = 5 ;  year = 2014 } ;
+      { day = 1  ; month = 1 ;  year = 2014 } ;
+      { day = 12 ; month = 19 ; year = 2013 }
+  ]
+ 
+
+
+
+__________________________________________________________________________________________
+
+
+ESERCIZIO 3
+===========
+
+Un piano di studi e' un elenco di esami, di cui viene specificato il nome, il numero dei crediti (cfu)
+e, se l'esame e' stato sostenuto, il voto.
+
+Un esame e' rappresentato da una stringa della forma
+
+  nome_esame#cfu#voto
+
+dove:
+
+o  nome_esame e' il nome dell'esame (si assume che il nome dell'esame non contenga il carattere #)
+o  cfu e' il numero di crediti dell'esame (numero composto da una o due cifre)
+o  voto e' il voto. 
+   Se l'esame non e' stato sostenuto, il voto non e' specificato.
+   Il voto '30 e lode' e' scritto come "30L".                      
+   Negli altri casi, il voto e' un numero di due cifre.
+
+Esempi di stringhe che rappresentano esami:
+
+ "programmazione#12#27"                         // esame di 12 cfu con voto 27/30  
+ "architettura degli elaboratori I#6#24"         
+ "logica matematica#6#30L"                      // esame di 6cfu con voto 30 e lode
+ "fisica#6#"                                    // esame di 6cfu non sostenuto
+
+a) Definire una espressione regolare esameRe che descrive un esame
+
+
+b) Introduciamo i seguenti tipi.
+
+// esito di un esame
+type voto =
+    | V of int   // voto ottenuto 
+    | L          // rappresenta il voto 30L  
+    | NS  ;;     // esame non sostenuto
+
+
+type esame = { nome : string ; crediti : int ; esito : voto } ;;
+
+
+Definire la funzione 
+
+  getEsami :  string -> seq<esame>
+
+che, data una stringa che rappresenta un piano di studi,
+costruisce la sequenza degli esami in esso contenuti.
+
+Verificare la corretteza costruendo la lista degli esami nel piano
+mioPiano definito come segue:
+
+let mioPiano=
+   "programmazione#12#27" +
+   "matematica del continuo#12#" +
+   "architettura degli elaboratori I#6#24" + 
+   "algoritmi e strutture dati#12#" +
+   "sistemi operativi I#6#27" +
+   "basi di dati#12#30" +
+   "linguaggi formali e automi#6#27" +
+   "fisica#6#" +
+   "logica matematica#6#30L" +
+   "calcolo delle probabilita' e statistica matematica#6#" +
+   "matematica del discreto#6#25" +
+   "programmazione funzionale#6#30L" ;;
+
+
+c)  L'obiettivo e' ora calcolare la media degli esami sostenuti.
+
+Le media va calcolata tenendo conto dei crediti di ciascun esame (media pesata).
+
+Quindi se gli esami sostenuti sono:
+
+ esame1  cfu1  voto1 
+ esame2  cfu2  voto2
+ .............
+ esameN  cfuN  votoN
+
+la media e' data da
+
+    sommaPesataVoti / sommaCfu
+
+dove
+
+  sommaPesataVoti =  (voto1 * cfu1) + (voto2 * cfu2) +  ... +  (votoN * cfuN)
+  sommaCfu = cfu1 + cfu2+ ... + cfuN
+
+Per calcolare la media, conviene definire la seguenti funzioni.
+
+- votoToInt : voto -> int
+
+  Determina il valore intero di un voto per il calcolo della media.
+  Il voto '30 e lode' vale 30. 
+
+- count : esame list -> int * int
+
+  Sia  listaEsami una lista di esami (sostenuti o no) 
+ 
+     count listaEsami
+
+  restituisce la coppia
+
+    (sommaCfu , sommaPesataVoti) 
+
+  dove sommaCfu e SommaPesataVoti e' definita come sopra.
+  Nel computo vanno considerati solo gli esami sostenuti.  
+
+- media : esame list -> float
+
+  Data una lista di esami , calcola la media degli esami sostenuti.
+
+
+Verificare che la media degli esami sostenuti in mioPiano e' 27.7
+essendo 
+
+ sommaPesataVoti = 1662   sommaCfu = 60
+
+
+_______________________________________________________
+  
+
+ESERCIZIO 4 (Ricerca di un link in una pagina web)
+==================================================
+
+
+a) Definire una espressione regolare linkRe che permette di riconoscere link a pagine html della forma
+
+ href =  "....." 
+
+Esempi di link di questa forma:
+
+  href="http://homes.di.unimi.it/~fiorentini"
+  href =  "Lab02/prova.fs"
+
+Notare che:
+
+-  prima e dopo di = possono esserci zero o piu' spazi;
+-  l'url dopo = e' racchiuso fra doppi apici.
+
+
+Sia str la stringa
+
+let str = "
+Esempio di una stringa in ci sono un po' di link
+link esterno:  href= \"www.google.com \" ... 
+link a una file fs: href= \"http://cooml.di.unimi.it/fp/Lez02/prova.fs\" 
+Un po' di link relativi  href= \"Lez03/es1.fs\" altro link:  href= \"Lez03/es2.fs\" 
+href= \"http://cooml.di.unimi.it/fp/Lez04/doc.pdf\" e' un link a un  pdf  
+...   href = \"Lez05/cap2.pdf\" e' un link a un pdf
+"
+
+Notare l'uso di \" per poter scrivere i doppi apici all'interno di una stringa.
+
+Definire
+
+let links =  ...
+
+in modo che links sia la lista di tutti i link in str, ossia:
+
+val links : ["href= "www.google.com ""; "href= "http://cooml.di.unimi.it/fp/Lez02/prova.fs""; ... ]
+
+
+b) Modificare a) in modo che links contenga solo le stringhe corrispondenti al path dei link
+(senza "href = "):
+
+val links : [ "www.google.com ";  "http://cooml.dsi.unimi.it/fp/Lez02/prova.fs"; ... ]
+
+
+Occorre modificare la definizione di  linkRe "raggruppando" il  path 
+(notare che vanno esclusi i doppi  apici "  che racchiudono il path).
+
+
+c) La seguente funzione  http : string -> string   scarica la pagina all'url specificato 
+
+---------
+
+open System.Net
+open System
+open System.IO
+
+//  http : string -> string
+
+let http(url: string) = 
+    let req = System.Net.WebRequest.Create(url) 
+    let resp = req.GetResponse()
+    let stream = resp.GetResponseStream() 
+    let reader = new IO.StreamReader(stream) 
+    let html = reader.ReadToEnd()
+    resp.Close()
+    html
+
+-------
+
+Usando tale funzione, definire la funzione
+
+   getLinks : string -> seq<string>
+
+che genera la sequenza dei link contenuti nella pagina di cui si specifica l'url.
+
+Esempio:
+
+  
+let fpweb = "http://cooml.di.unimi.it/fp/" ;;
+
+let fpLinks = getLinks fpweb ;;
+
+let l = Seq.nth 10 fpLinks
+// val l : string = "https://upload.di.unimi.it/"
+
+

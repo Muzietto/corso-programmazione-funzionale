@@ -1,0 +1,79 @@
+0. Type checking
+
+ Add to the language of expressions **disjunctions** of booleans, give
+appropriate infix notation, extend the interpreter and the type
+checker. Finally run an example thaw orks and one that does not.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+1. Definitional extension of  IMP
+
+- A language extension is called "definitional" if the new constructs
+  can be defined in terms of the given one.
+
+1.1 Define the command "IF b THEN c"  with the folllowing semantics:
+
+  s |- t >> true       s |- c >>> s'
+--------------------------------------
+   s |- IF b THEN c  >>> s'
+
+
+  s |- t >> false  
+--------------------------------------
+   s |- IF b THEN c  >>> s
+
+
+1.2 Define a command "RAND x" which generates a new random integer and
+updates the state giving the integer to x. 
+	Hint: use the class System.Random
+
+1.3 Consider the REPEAT construct, whose operational semantics is as
+follows:
+
+
+   s |- c >>> s'        s' |- b >> true
+------------------------------------------- (E_Re_End)
+    s |- REPEAT c UNTIL b END  >>>  s'  
+
+
+  s |- c  >>> s'  s' |- b >> false        s'|- REPEAT c UNTIL b END >>>  s''  
+-------------------------------------------------------------------------- (E_Re_Loop)
+    s |- REPEAT c UNTIL b END  >>> s''  
+
+
+- Define it in terms of the original language of IMP using While
+
+1.4 Consider FOR loops. Define a command  "FOR x IN m..n BY inc DO c", which executes
+a command c from bound m to bound n with increments inc. For example
+
+x := 1
+FOR x IN 1.. 10 BY 2 DO
+   PRINT x
+
+will print 1, 3, 5, 7, 9
+
+Hint: define a less or equal relation and then use a while loop.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+2. "Real" extension to IMP. Here we change the syntax of commands and
+the implementation of the function exec to offer new functionalities.
+
+2.1 Add a command "PRINT x", which prints the current value of the
+variable x in the given enviroment and then returs the latter. If the variable
+does not exists or if we try to print a non variable term, we just
+return the enviroment.
+
+2.2 Add a command c1 OR c2, which implements non-deterministic choice,
+that is with operational semantics
+
+     s |- c1 >>> s'
+---------------------------    and    
+     s |- c1 OR c2 >>> s'
+
+     s |- c2 >>> s'
+---------------------
+     s |- c1 OR c2 >>> s'
+
+Hint: since exec is a function, you need to simulate non determism
+with a toin coss, that is exploiting (pesudo)-randomness, so use "RAND
+x".

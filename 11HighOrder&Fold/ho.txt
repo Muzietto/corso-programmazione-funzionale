@@ -1,0 +1,92 @@
+   FUNZIONI HIGHER-ORDER (LIST LIBRARY)
+   ====================================
+
+
+*   List.map :  ('a -> 'b) -> 'a list -> 'b list
+
+    Dati f : 'a->'b  e   [x0; x1 ; ... ; xn] : a' list
+
+      List.map f  [x0; x1 ; ... ; xn] = [ f x0 ; f x1 ; ... ; f xn]
+
+Esempio:
+
+List.map (fun n -> n*n) [1 .. 10] ;;  //  [1; 4; 9; 16; 25; 36; 49; 64; 81; 100]
+
+
+*   List.exists : ('a -> bool) -> 'a list -> bool
+
+    Dati pred : 'a-> bool  e  ls : 'a list
+
+      List.exists pred ls = true      se esiste x in ls tale che 'pred x' e' true     
+                            false     altrimenti (per ogni x in ls, 'pred x' e' false)
+
+Esempi:
+
+List.exists (fun n -> n % 2 = 0 ) [1 .. 10] ;;  // true  
+List.exists (fun n -> n > 100 ) [1 .. 10] ;;    // false 
+
+
+*   List.forall : ('a -> bool) -> 'a list -> bool
+
+    Dati pred : 'a-> bool e  ls  : 'a list
+
+      List.exists pred ls = true      se, per ogni x in ls, 'pred x' e' true     
+                            false     altrimenti (esiste  x in ls tale che 'pred x' e' false)
+
+Esempi:
+
+List.forall (fun n -> n  < 11 ) [1 .. 10];;     // true
+List.forall (fun n -> n % 2 = 0 ) [1 .. 10];;   // false  
+
+
+*   List.tryFind : ('a -> bool) -> 'a list -> 'a option
+
+    Datipred : 'a-> bool e  ls  : 'a list
+
+      List.tryFind pred ls = Some x   se esiste x in ls tale che 'pred x' e' true
+                             None     altrimenti (per ogni x in ls, 'pred x' e' false)
+                   
+Esempi:
+
+List.tryFind ( fun n -> n < 100 ) [1 ..10] ;;  // Some 1
+List.tryFind ( fun n -> n > 100 ) [1 ..10] ;;  // None 
+
+
+*  List.filter : ('a -> bool) -> 'a list -> 'a list
+
+  Dati un predicato pred : 'a-> bool e una lista ls  : 'a list
+
+  List.filter pred ls =  lista degli x in ls per cui 'pred x' vale
+
+Esempi:
+
+List.filter (fun x -> x % 2 = 0) [1..10] ;; // [2; 4; 6; 8; 10]  
+List.filter (fun x -> x > 10 ) [1..10] ;;   // []  
+
+________________________________________________________________________
+
+
+ESERCIZI
+=========
+
+1) Dare una definizione ricorsiva delle funzioni definite sopra
+
+2) Definire la funzione exists analoga a List.exists  usando List.forall;
+viceversa, definire la funzione forall analoga a List.forall usando List.exists. 
+  
+Usare le equivalenze di De Morgan:
+
+  forall x P(x)  <==>  ~( exists x ~P(x) )
+  
+  exists x P(x)  <==>  ~( forall x ~P(x) )
+
+Per la negazione, usare  la funzione not : bool -> bool.
+
+
+3) Definire la funzione 
+
+   isIn : 'a -> 'a list -> bool when 'a : equality
+
+che determina l'appartenenza di un elemento a una lista usando List.exists.
+
+4) Definire la funzione exists analoga a List.exixts usando List.tryFind.

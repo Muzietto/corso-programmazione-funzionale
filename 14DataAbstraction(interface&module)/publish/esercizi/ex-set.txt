@@ -1,0 +1,85 @@
+1. Aggiungere all'interfaccia set.fsi le seguenti funzionni
+
+count : FSet<'a> -> int, che computa la cardinalità dell'insieme
+
+map : ('a -> 'b) -> FSet<'a> -> FSet<'b>, 
+       dove map f s = {f(x) | x in s}
+
+implementare le dette funzioni sia come liste che come alberi.
+
+Per debuggarle, si tenga presente che la libreria Set contiene tutte e
+molte altre funzioni
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+2.  Usando una delle implementazioni di cui sopra, dare una codifica
+dell'esercizio 5.6:
+
+define a relation from a set A to a set B as a subset of A × B. A
+relation r′ is said to be smaller than r, if r′ is a subset of r,
+i.e. if r′ ⊆ r. A relation r is called finite if it is a finite subset
+of A × B. Assuming that the sets A and B are represented by F# types
+’a and ’b we can represent a finite relation r by a value of type
+FSet<’a * ’b>.
+
+You can use the following type abbreviation:
+
+type Rel<'a,'b when 'a : equality and 'b : equality> = FSet<'a * 'b>;;
+
+i. Give as a **concrete** example the "less" relation over the set
+{1,2,3}. You do not need to write the function, just list the elements
+
+ii. The domain dom r of a relation r is the set of elements a in A
+where there exists an element b in B such that (a, b) ∈ r. Write an F#
+declaration expressing the domain function.
+
+iii. The range rng r of a relation r is the set of elements b in B where
+there exists an element a in A such that (a, b) ∈ r. Write an F#
+declaration expressing the range function.
+
+iv. A relation r from a set A to the same set is said to be symmetric
+if (a1 , a2 ) ∈ r implies (a2 , a1 ) ∈ r for any elements a1 and a2 in
+A. The symmetric closure of a relation r is the smallest symmetric
+relation containing r. Declare an F# function to compute the symmetric
+closure.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+3. A set can be defined via its characteristic function. In particular a
+set of integers can be seen as the function c_S : int -> bool,
+
+For example the set S = {1,2} can be seen as 
+
+    ...
+    0 --> false
+    1 --> true 
+    2 --> true
+    3 --> false
+    ...
+
+In this exercise you will give another implementation of  the
+(original, not the one you extended in exercise 1) signature set.fsi 
+
+
+type FSet<'a when 'a : equality> = Ch of ('a -> bool );;
+
+
+
+Practically speaking, the above set S will be represented as the expression
+
+	 Ch (fun x -> x = 1 || x = 2)
+
+where you do not track (i.e., assign false) to integers  not in the set
+
+
+For debugging purposes, you can use the following function, which
+return the list corresponding to a set (of integers)
+
+toList : FSet<int> -> int -> int list
+
+let toList (Ch s)  max =  
+        [ for x in 1 .. max do if s x then yield x ];;
+
+

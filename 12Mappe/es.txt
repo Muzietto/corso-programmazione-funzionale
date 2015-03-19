@@ -1,0 +1,76 @@
+ESERCIZI
+========
+
+Nei prossimi esercizi consideriamo le espressioni di tipo expr2 (espressioni intere con variabili)
+definite dalla grammatica
+
+  e  ::=  x | n |  e1 + e2 | e1 - e2 |   e1 * e2 
+
+
+type expr2 =
+  | V of string          
+  | C of int
+  | Sum of expr2 * expr2
+  | Diff of  expr2 * expr2
+  | Prod of  expr2 * expr2  ;;
+
+
+1)  Definire la funzione
+
+  vars : expr2 -> string list
+
+che data una espressione di tipo expr2 restituisce la lista delle variabili contenute in essa.
+La lista non deve contenere duplicati.
+Conviene  definire la funzione
+
+  union : 'a list -> 'a list -> 'a list when 'a : equality
+
+che fa l'unione di due liste (senza duplicati).
+
+
+Verificare la correttezza  della funzione vars con le seguenti espressioni
+(ciascuna espressione va codificata nel corrispondente termine  F#)
+
+e1 = 2 + 3  // []
+
+e2 = x + y  // [ "x" ; "y" ]
+
+e3 = z + z  // ["z"]
+
+e4 = e2 * e2 //  ["x" ; "y" ]
+
+
+2) Dati due termini t, u di tipo expr2 e una variabile x, 
+l'operazione subst(x,t,u) (sostituzione di x con t in u)  
+e' definita come segue:
+
+  subst(x,t,u) = termine ottenuto sostituendo in u ogni occorrenza di x con t.
+
+Ad esempio, dati i termini
+
+t1 = 5     t2 = x + 1    t3 = 2 * z
+
+    u =  x + 2 * y
+
+vale:
+
+ subst(x, t1, u)  =   5 +  2 * y
+
+ subst(y, t2, u)  =   x +  2 * (x + 1)
+
+ subst(y, t3, u)  =   x + 2 * ( 2 * z )
+
+ subst(w, t1, u)  =   x + 2 * y
+
+
+Definire la funzione
+
+  subst : string -> expr2 -> expr2 -> expr2
+
+che data una variabile x (stringa) e due termini t, u di tipo expr2
+restituisce il termine subst(x,t,u).
+
+Verificare la corretteza codificando gli esempi mostrati sopra.
+
+
+  

@@ -1,0 +1,158 @@
+
+ESERCIZIO 1
+===========
+
+Definire una funzione sommaArea che, date due figure fig1 e fig2,
+restituisce la somma delle areee delle due figure, se  definita.
+Il risultato deve essere un option type.
+Per calcolare l'area, usare la funzione areaOpt definita a lezione. 
+
+Ad esempio:
+
+let sum1 = sommaArea ( Rettangolo (2,5) , (Quadrato 10) ) ;;
+//  val sum1 : float option = Some 110.0
+
+let sum2 = sommaArea ( Rettangolo (2,-5),  (Quadrato 10) ) ;;
+// val sum2 : float option = None
+
+let sum3 = sommaArea ( Rettangolo (2, 5), (Quadrato -10) ) ;;
+// val sum3 : float option = None
+
+
+______________________________________________________________________________________
+
+
+ESERCIZIO 2
+===========
+
+Definire le seguenti funzioni su liste in cui si utilizzano option types.
+
+
+a) head_tailOpt: 'a list -> ('a option, 'a list option)
+
+Restituisce None se la lista e' vuota, altrimenti la coppia
+composta dalla testa della lista e la coda della lista.
+
+Esempi:
+
+let h1 = head_tailOpt [ "uno" ; "due" ; "tre" ] ;;          
+// val h1 : string option * string list option  =   (Some "uno", Some ["due"; "tre"])
+
+
+let h2 = head_tailOpt ([] : int list) ;;
+// val h2 : int option * int list option = (None, None)
+
+NOTA
+====
+
+1) L'annotazione di tipo sulla lista vuota in h2 e' necessaria per evitare un errore di tipo
+  (il motivo verra' spiegato piu' avanti) 
+
+2) Nel secondo esempio in realta' l'interprete stampa
+
+val h2 : int option * int list option = (null, null)
+
+	
+Confrontare con le funzioni predefinite List.head and List.tail ([] : int list).
+
+/////////////////////////////////////
+
+b) lastOpt : 'a list -> 'a option 
+
+Data una lista l, last l restituisce l'ultimo elemento di l, se definito
+(ossia, se la lista non e' vuota).
+   
+Esempi:
+
+let l1 = lastOpt [ "uno" ; "due" ; "tre" ] ;;
+// val l1 : string option = Some "tre"
+
+let l2 = lastOpt ( [ ] : int list ) ;;
+// val l2 : int option = None
+    
+
+/////////////////////////////////////
+
+c) catOpt: 'a option list -> 'a list
+
+Restisuisce la lista degli elementi x tale che Some x e' nella lista,
+eliminando i  None.
+
+Esempi:
+ 
+let lc1 = catOpt ( [Some 1 ; None ; Some 2 ; Some 3 ; None] ) ;;                          
+// val lc1 : int list = [1; 2; 3]
+
+let lc2 = catOpt ( [ None ; Some "cane" ; None ; None ; Some "gatto" ; Some "topo"] ) ;;  
+// val lc2 : string list = ["cane"; "gatto"; "topo"]
+
+
+/////////////////////////////////////
+
+d) mynth : ('a list * int) -> 'a option
+
+Data una lista xs = [x_0 ; x_1 ; x_2 ; ...]  e un intero n >=0, 
+
+  mynth (xs, n)
+
+restituisce, se definito, l'elemento  x_n (elemento di indice n).
+
+
+Esempi:
+
+let y1 = mynth (['a'..'z'], 0) ;;
+// val y1 : char option = Some 'a'
+
+let y2 = mynth (['a'..'z'], 2) ;;
+// val y2 : char option = Some 'c'
+
+let y3 = mynth (['a'..'z'], 30) ;;
+// val y3 : char option = None
+
+Confrontare con la funzione predefinita List.nth
+
+____________________________________________
+
+ESERCIZIO 3 
+===========
+
+Definiamo i seguenti tipi:
+
+type tagged = Int of int | Bool of bool;;
+
+type tList = tagged list;;  // type abbreviation
+
+Notare che il tipo tagged permette di rappresentare valori che possono essere int o bool,
+useremo spesso questo tipo di definizioni.
+
+Esempi di liste di tipo tList sono:
+
+let tl1  = [ Int 0 ] ;;
+let tl2  = [ Int 0 ; Int 1 ; Bool true ; Int 4 ; Bool false ] ;; 
+let tl3  = [ Int 3 ;  Bool (4>6) ; Int (44-66) ; Bool ( 10 = 5 + 5 )  ];;
+
+Definire la funzione
+
+    printTl : tList -> string
+
+che, data una lista tl : tList, restituisce una stringa che descrive il contenuto di tl
+(valore e tipo di ciascun elemento) come mostrato negli esempi sotto.
+
+Per evitare di duplicare codice, si consiglia di definire la funzione
+
+  printVal : tagged -> string
+
+che restituisce la stringa che descrive un valore di tipo tagged.
+
+Esempi di stringhe che descrivono il contenuto delle liste definite sopra:
+
+let s1 = printTl tl1 ;;
+// val s1 : string =  "0 : int"
+
+let s2 = printTl tl2 ;;
+// val s2 : string = "0 : int; 1 : int; true : bool; 4 : int; false : bool"
+
+let s3 = printTl tl3 ;;
+//  val s3 : string =  "3 : int; false : bool; -22 : int; true : bool"
+
+

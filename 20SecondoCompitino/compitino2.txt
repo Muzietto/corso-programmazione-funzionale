@@ -1,0 +1,200 @@
+ESERCIZIO 1
+===========
+
+i)  Definire le seguenti quattro sequenze infinite di tipo  seq<int>:
+
+nats     //  numeri naturali  0, 1, 2, 3  ...  
+evens    //  numeri  pari  0, 2, 4, 6 ...  
+odds     //  numeri dispari  1, 3, 5, 7 ...  
+nats5    //  sequenza  0, 1, 2, 3, 4, 5, 5, 5, 5, 5, 5, .... 
+
+ii) Definire la funzione (anche usando i metodi pre-definiti in Seq)
+
+  eqs :  seq<'a> -> seq<'a> -> seq<bool>   when 'a : equality 
+
+che confronta elemento per elemento due sequenze infinite. 
+Piu' precisamente, date due sequenze infinite 
+  
+  sq1 = { x0, x1, x2 , ... }  :  seq<'a> 
+  sq2 = { y0, y1, y2 , ... }  :  seq<'a> 
+
+il risultato di
+
+    eqs sq1 sq2
+ 
+e' la sequenza infinita  sq = { b0, b1, b2, ... }  tale che, per ogni k>=0:
+
+  bk =   true     se  xk = yk  
+         false    altrimenti
+ 
+Esempio:
+
+  sq1 = { 1, 2, 3, 4, 5, ....  }
+  sq2 = { 1, 0, 3, 4, 4, ....  }
+ 
+  sq  = { true, false, true, true, false, ... }
+  
+
+TEST:
+
+let eq1 = eqs nats evens |> Seq.take 10 |> Seq.toList ;;
+let eq2 = eqs nats odds  |> Seq.take 10 |> Seq.toList ;;
+let eq3 = eqs nats nats5 |> Seq.take 10 |> Seq.toList ;;
+
+iii) Definire la funzione 
+
+  merge :  seq<'a> -> seq<'a> -> seq<'a>    when 'a : comparison
+
+che, date due sequenze infinite ordinate sq1 e sq2, 
+costruisce la sequenza ordinata sq corrispondente al merge di sq1 e sq2.
+
+Esempio:
+ 
+  sq1 = { 0, 0, 10, 11, 15, 20, ... } 
+  sq2 = { 1, 3, 10, 12, 14, 16, ... }
+ 
+  sq = { 0, 0, 1, 3, 10, 10, 11, 12, 14, 15, 16, 20, ... }
+
+TEST:
+
+let m1 =  merge evens odds |> Seq.take 20 |> Seq.toList ;;
+let e1 =  eqs nats (merge evens odds) |> Seq.take 10 |> Seq.toList ;;
+let m2 =  merge nats evens |> Seq.take 20 |> Seq.toList ;;
+let m3 =  merge nats nats5 |> Seq.take 20 |> Seq.toList ;;
+
+// m1 = [0; 1; 2; 3; 4; 5; 6; 7; 8; 9; 10; 11; 12; 13; 14; 15; 16; 17; 18; 19]
+// m2 = [0; 0; 1; 2; 2; 3; 4; 4; 5; 6; 6; 7; 8; 8; 9; 10; 10; 11; 12; 12]
+// m3 = [0; 0; 1; 1; 2; 2; 3; 3; 4; 4; 5; 5; 5; 5; 5; 5; 5; 5; 5; 5]
+
+______________________________________________________________________________________________
+
+
+ESERCIZIO 2
+===========
+
+Un dizionario e' una mappa finita tra stringhe (dette "chiavi") e
+elementi di  tipo 'a. In altri termini un dizionario e' un esempio della
+collezione predefinite Map<string,'a>. Scopo dell'esercizio e'
+ri-implemetare alcune funzionalita' di questa collezione usando alberi
+binari di ricerca e esportarle come tipo di dati astratto.
+
+Il file dict.fsi contiene la seguente segnatura: 
+
+- val empty : 'a dict  
+ 
+  Dizionario vuoto.
+
+- val lookup :  string -> 'a dict -> 'a
+  
+  Dati una stringa k e un dizionario dict1,  
+
+        lookup k dict1
+
+   restituisce il dato associato alla chiave k in dict1.
+   Se la chiave k non e' in dict1, va sollevata l'eccezione  KeyNotFound.
+
+-  val insert : string ->  'a  -> 'a dict  -> 'a dict
+   
+   Dati una chiave k, un dato d e un dizionario  dict1 
+
+        insert k d dict1 
+
+   restituisce il dizionario dict2 ottenuto aggiungendo a dict1 la coppia (k,d). 
+   Se la chiave e' gia' presente, il dato ad essa associato  e' riscritto.
+
+-   val toList : 'a dict -> (string * 'a) list
+
+    Restituisce la lista con tutti gli elementi (chiave,dato)  nel dizionario.
+    La lista deve essere ordinata rispetto alla chiave  (ordinamento su stringhe).
+       
+i) Implementare nel file dict.fs la segnatura dict.fsi mediante un albero binario di ricerca.
+
+Un elemento (k,d) del  dizionario  corrisponde a un nodo dell'albero di ricerca.
+La relazione d'ordine fra i nodi dell'albero e' determinata dalle chiavi.
+Quindi, dato un qualunque nodo (k,d) dell'albero:
+
+- tutti i nodi nel sottoalbero sinistro di (k,d) devono avere chiave k' tale che k' < k;
+- tutti i nodi del sottoalbero  destro  di (k,d) devono avere chiave k' tale che k' > k.
+
+Generare il file dict.dll, che va usato nei punti successivi dell'esercizio. 
+
+****
+
+Nel resto dell'esercizio  dict.dll viene utilizzato per rappresentare
+un ambiente che a una variabile associa un valore intero.
+La chiave di un elemento del dizionario rappresenta una variabile, il dato associato il suo valore.
+Ad esempio, l'elemento
+
+   ( "x" , 1 )
+ 
+significa che l'ambiente definisce la variabile "x" avente valore 1.
+
+Il codice  va scritto nel file es2.fsx (script file) che deve iniziare con 
+
+#r @"dict.dll";;  
+
+assumendo che la libreria sia allo stesso livello, altrimenti usando il path completo.
+
+ii)  Scrivere le seguenti definizioni
+
+env1   //  ambiente contenente l'elemento ("x",1)
+env2   //  env1 piu' elemento ("y",2)
+env3   //  env2 piu' elemento ("a",10)
+env4   //  env3 piu' elemento ("h",5)
+env5   //  env4 piu' elemento ("d",7)
+x      //  risultato della ricerca del valore della variabile "x" in env5
+d      //  risultato della ricerca del valore della variabile "d" in env5   
+l1     //  lista ordinata contenente gli elementi in env5
+// l1 = [ ("a", 10); ("d", 7); ("h", 5); ("x", 1); ("y", 2) ]
+
+iii) Consideriamo la seguente definizione di espressione
+
+type aexp =
+  | C of int
+  | V of string
+  | Sum of aexp * aexp
+  | Def of string * aexp * aexp
+
+Esempi:
+
+// env5 = [ ("a", 10); ("d", 7); ("h", 5); ("x", 1); ("y", 2) ]
+
+let e1 = Def( "z" , Sum(V "x", C 10), Sum(V "y", V "z") ) 
+let e2 = Def( "x" , C 100 ,  Sum(V "x", V "y") ) 
+
+Il valore di e1 in env5 e' 13.
+Il valore di e2 in env5 e' 102.
+
+Completare la seguente funzione aeval che valuta l'espressione t nell'ambiente env.
+Utilizzate le primitive offerte dalla vostra libreria dict.dll.   
+
+let rec aeval t env =
+    match t with
+    | C n      ->  n
+    | V s      ->  ...
+    | Sum(t1,t2)   -> aeval t1 env + aeval t2 env
+    | Def(x,e1,e2) -> ...
+
+Verificare che i valori delle epressioni e1 e e2 in env5 siano calcolati correttamente.
+______________________________________________________________________________________________
+
+ESERCIZIO 3
+===========
+
+Definire le seguenti funzioni su liste **usando** List.fold
+
+1.  sum p xs : (int -> bool) -> int list -> int 
+
+che ritorna la somma degli elementi che
+soddisfano p.
+
+Esempio:  sump ( fun x -> x % 2 = 0 ) [0 .. 10] = 30
+
+2. revrev :  'a list list -> 'a list list 
+
+che applicata a una lista di liste, rigira sia i singoli componenti che la lista esterna
+
+Esempio: 
+ revrev[ [1;2] ; [3] ; [4;5;6] ; [7 .. 10 ] ] = [[10; 9; 8; 7]; [6; 5; 4]; [3]; [2; 1]]
+
+
