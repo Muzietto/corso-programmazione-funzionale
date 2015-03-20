@@ -1,4 +1,4 @@
-
+////////////////// ES. 1 ///////////////////////////
 function rectangle(b, h){
   return function(w){
     return w('rectangle', b, h);
@@ -21,66 +21,33 @@ function area(shape){
   return shape(function(type, a, b){
     switch (type) {
       case 'rectangle':
-        return a * b;
+        return some(a > 0 && b > 0 ? a * b : null);
       case 'square':
-        return a * a;
+        return some(a > 0 ? a * a : null);
       case 'triangle':
-        return a * b / 2;
+        return some(a > 0 && b > 0 ? a * b / 2: null);
     }
   });
 }
 
-
-////////// MAYBE ////////////
-function some(item){
-  if (item === null
-   || item === NaN
-   || item === Infinity
-   || typeof item === 'undefined') {
-    return none();
-  }
-  var result = function(w){
-    return w(item);
-  }
-  result.match = function(s,n){
-    return s(item);
-  }
-  return result;
+function areaSum(){
+  var shapes = Array.prototype.slice.apply(arguments);
+  return shapes.reduce(function(acc, curr){ 
+    return some(value(acc) + (isSome(area(curr)) ? value(area(curr)) : 0)); }, some(0));
 }
 
-function none(){
-  var result = function(w){
-    return w();
-  }
-  result.match = function(s,n){
-    return n();
-  }
-  return result;
+function value(option){
+  return option(function(x){ return x; });
 }
 
-function maybe_fmap(maybe,fab){
-  return maybe.match(
-    function(i){ 
-      try {
-        return some(fab(i));
-      } catch (e) {
-        return none();
-      }
-    },
-    function(){ return maybe; }
+///////////////// ES. 2 ///////////////////////
+function head_tailOpt(list){
+  return couple(
+    some(head(list)),
+    some(isEmpty(tail(list)) ? null : tail(list))
   );
 }
 
-function isSome(maybe){
-  return maybe.match(
-    function(){ return true; },
-    function(){ return false; }
-  );
+function lastOpt(list){
+  return some(isEmpty(last(list)) ? null : last(list))
 }
-function isNone(maybe){
-  return maybe.match(
-    function(){ return false; },
-    function(){ return true; }
-  );
-}
-

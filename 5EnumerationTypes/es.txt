@@ -75,8 +75,8 @@ let l2 = lastOpt ( [ ] : int list ) ;;
 
 c) catOpt: 'a option list -> 'a list
 
-Restisuisce la lista degli elementi x tale che Some x e' nella lista,
-eliminando i  None.
+Restituisce la lista degli elementi x tale che Some x e' nella lista,
+eliminando i None.
 
 Esempi:
  
