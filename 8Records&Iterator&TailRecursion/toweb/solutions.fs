@@ -18,7 +18,7 @@ let rec valutaList valList =
         | (st,v) :: vals ->
             valuta (st, v ) :: ( valutaList vals );;
 
-// nota: non vi è bisogno di specificare che la funzione opera su coppue di liste
+// nota: non vi è bisogno di specificare che la funzione opera su coppie di liste
 
 let rec valutaList1 valList =
     match valList with
