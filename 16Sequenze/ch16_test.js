@@ -14,7 +14,7 @@ describe('in chapter 16',function(){
         expect(err).to.be.equal('invalid operation');
       }
     });
-    it('that single elements can be extacted from sequences by giving their position',function(){
+    it('that single elements can be extracted from sequences by giving their position',function(){
       expect(Seq.nth(2,this.integers)).to.be.equal(2);
       expect(Seq.nth(222,this.integers)).to.be.equal(222);
     });
