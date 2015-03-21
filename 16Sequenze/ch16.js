@@ -2,6 +2,7 @@
 'use strict'
 var Seq = (function(){
 
+  // stateless sequence
   function sequence(seqFun,seed){
     // handle finite sequences
     if (Array.isArray(seqFun)) return arraySeq(seqFun,0);
