@@ -8,9 +8,11 @@ var Seq = (function(){
     if (Array.isArray(seqFun)) return arraySeq(seqFun,0);
     return function(){
       if (arguments.length > 0) throw 'invalid operation';
+      var nextSeed = seqFun(seed);
+      if (typeof nextSeed === 'undefined') throw 'empty sequence';
       return couple(
         seed,
-        sequence(seqFun,seqFun(seed))
+        sequence(seqFun,nextSeed)
       );
     }
   }

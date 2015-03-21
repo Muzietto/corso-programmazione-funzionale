@@ -4,6 +4,7 @@ describe('in chapter 16',function(){
   describe('apt functions in namespace Seq handling stateless sequences as thunks',function(){
     beforeEach(function(){
       this.naturals = Seq.sequence(function(x){ return x + 1; },0);
+      this.undefineds = Seq.sequence(function(){ /*return undefined;*/ },0);
     });
     it('should build infinite sequences from functions',function(){
       expect(first(this.naturals())).to.be.equal(0);
@@ -12,6 +13,11 @@ describe('in chapter 16',function(){
         expect(this.naturals('whatever')).to.fail;
       } catch (err) {
         expect(err).to.be.equal('invalid operation');
+      }
+      try {
+        expect(this.undefineds()).to.fail;
+      } catch (err) {
+        expect(err).to.be.equal('empty sequence');
       }
     });
     it('should extract single elements from sequences by giving their position',function(){
