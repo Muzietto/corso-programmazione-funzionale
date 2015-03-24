@@ -50,7 +50,7 @@ describe('chapter 5',function(){
       expect(isEmpty(catOpt([some(1),none()]))).to.be.false;
       expect(catOpt(list(none(),none(),some(1)))[0]).to.be.equal(1);
     });
-    it.skip('mynth returns somes for existing list elems and none otherwise',function(){
+    it('mynth returns somes for existing list elems and none otherwise',function(){
       expect(isSome(mynth([1],0))).to.be.true;
       expect(value(mynth(list(1),0))).to.be.equal(1);
 

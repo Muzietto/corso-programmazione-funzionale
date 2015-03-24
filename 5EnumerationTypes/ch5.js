@@ -57,6 +57,8 @@ function catOpt(list) {
   return _.map(_.filter(list, isSome), value);
 }
 
-function mynth() {
-  
+function mynth(list, index) {
+  return (index < list.length) ? some(list[index]) : none();  
 }
+
+///////////////// ES. 3 ///////////////////////
