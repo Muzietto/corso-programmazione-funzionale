@@ -22,6 +22,7 @@ function area(shape){
     switch (type) {
       case 'rectangle':
         return some(a > 0 && b > 0 ? a * b : null);
+        
       case 'square':
         return some(a > 0 ? a * a : null);
       case 'triangle':
@@ -50,4 +51,12 @@ function head_tailOpt(list){
 
 function lastOpt(list){
   return some(isEmpty(last(list)) ? null : last(list))
+}
+
+function catOpt(list) {
+  return _.map(_.filter(list, isSome), value);
+}
+
+function mynth() {
+  
 }

@@ -28,7 +28,7 @@ Notare che il tipo della funzione costo e'
   string * (string -> float) * (string -> int)  -> float
 */
 
-var costo = function(cod, prezzoDi, scontoDi){
+function costo(cod, prezzoDi, scontoDi) {
 	return prezzoDi(cod) - ((scontoDi(cod)/100)*prezzoDi(cod));
 }
 
@@ -61,39 +61,22 @@ Notare che le funzioni hanno tipo:
 
 */
 
-var prA = function(cod){
+function prA(cod) {
 	if (cod === 'cod1') return 20.0;
 	return 50.50;
 }
 
-var prB = function(cod){
+function prB(cod) {
 	if (cod === 'cod1') return 40.0;
 	return 100.50;
 }
 
-var scA = function(cod){
+function scA(cod) {
 	if (cod === 'cod1') return 10;
 	return 0;
 }
 
-var scB = function(cod){
+function scB(cod) {
 	if (cod === 'cod1') return 5;
 	return 25;
 }
-
-/*
-Provare a calcolare i seguenti costi:
-
-let c1AA = costo( "cod1", prA, scA ) ;;
-// val c1AA : float = 18.0 
-
-let c1BA = costo( "cod1" , prB, scA ) ;;
-// val c1BA : float = 36.0 
-
-let c2BB = costo( "cod2" , prB, scB ) ;;
-// val c2BB : float =  75.375
-*/
-
-console.log(costo('cod1', prA, scA));
-console.log(costo('cod1', prB, scA));
-console.log(costo('cod2', prB, scB));

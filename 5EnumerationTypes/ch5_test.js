@@ -43,12 +43,12 @@ describe('chapter 5',function(){
       expect(isSome(lastOpt([1,'due',3]))).to.be.true;
       expect(value(lastOpt(list(1,'due',3)))).to.be.equal(3);
     });
-    it.skip('catOpt removes nones from list and unwraps somes',function(){
+    it('catOpt removes nones from list and unwraps somes',function(){
       expect(isEmpty(catOpt([none()]))).to.be.true;
       expect(isEmpty(catOpt(list(none())))).to.be.true;
 
       expect(isEmpty(catOpt([some(1),none()]))).to.be.false;
-      expect(value(catOpt(list(none(),none(),some(1)))[0])).to.be.equal(1);
+      expect(catOpt(list(none(),none(),some(1)))[0]).to.be.equal(1);
     });
     it.skip('mynth returns somes for existing list elems and none otherwise',function(){
       expect(isSome(mynth([1],0))).to.be.true;
