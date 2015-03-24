@@ -61,5 +61,20 @@ describe('chapter 5',function(){
       expect(isNone(mynth(list(100),100))).to.be.true;
     });
   });
+  describe('exercise 3',function(){
+    beforeEach(function(){
+    });
+    it('printVal print the description of the tagged value given in input',function(){
+      expect(printVal(Int(0))).to.be.equal("0 : int;");
+      expect(printVal(Bool(true))).equal("true : bool;");
+      expect(printVal(Int(44-66))).to.be.equal("-22 : int;");
+      expect(printVal(Bool( 10 === 5 + 5 ))).to.be.equal("true : bool;");
+    });
+    it('printTl print a description of the tagged list given in input',function(){
+      expect(printTl([Int(0)])).to.be.equal("0 : int;");
+      expect(printTl([Int(0), Int(1), Bool(true), Int(4), Bool(false)])).to.be.equal("0 : int;1 : int;true : bool;4 : int;false : bool;");
+      expect(printTl([Int(3), Bool(4>6), Int(44-66), Bool( 10 === 5 + 5 )])).to.be.equal("3 : int;false : bool;-22 : int;true : bool;");
+    });
+  });
 });
 

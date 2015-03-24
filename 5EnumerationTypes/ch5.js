@@ -62,3 +62,26 @@ function mynth(list, index) {
 }
 
 ///////////////// ES. 3 ///////////////////////
+function Int(val) {
+  return function(w) {
+    return w('int', val);
+  };
+}
+
+function Bool(val) {
+  return function(w) {
+    return w('bool', val);
+  };
+}
+
+function printTl(tList) {
+  return tList.reduce(function(acc, curr) {
+    return acc + printVal(curr);
+  }, '');
+}
+
+function printVal(tVal) {
+  return tVal(function(type, val) {
+    return val + ' : ' + type + ';';
+  }); 
+}
