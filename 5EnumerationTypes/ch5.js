@@ -54,7 +54,7 @@ function lastOpt(list){
 }
 
 function catOpt(list) {
-  return _.map(_.filter(list, isSome), value);
+  return list.filter(isSome).map(value);
 }
 
 function mynth(list, index) {
