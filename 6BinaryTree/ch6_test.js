@@ -58,5 +58,17 @@ describe('chapter 6',function(){
     it.skip('intToFloatTree works are we wish',function(){
     })
   });
+  describe('exercise B.1',function(){
+    beforeEach(function(){
+      this.intTree = insertFromList([ 20, 10, 60, 15, 40, 100, 30, 50, 70, 35, 42, 58, 75, 32, 37 ], empty())
+      this.strTree1 = insertFromList([ "pesca", "banana", "uva", "albicocca", "nocciola", "ribes" ], empty());
+      this.strTree2 = insertFromList([ "limone", "ciliegia", "mela", "pera", "noce"  ], this.strTree1);      
+    });
+    it('inorderToList works are we wish',function(){
+      expect(inorderToList(this.intTree)).to.deep.equal([10, 15, 20, 30, 32, 35, 37, 40, 42, 50, 58, 60, 70, 75, 100]);
+      expect(inorderToList(this.strTree1)).to.deep.equal(["albicocca", "banana", "nocciola", "pesca", "ribes", "uva"]);
+      expect(inorderToList(this.strTree2)).to.deep.equal(["albicocca", "banana", "ciliegia", "limone", "mela", "nocciola", "noce", "pera", "pesca", "ribes", "uva"]);
+    })
+  });
 });
 

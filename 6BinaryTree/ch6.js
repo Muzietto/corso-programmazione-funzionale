@@ -11,3 +11,8 @@ function insertFromList(list, binTree) {
     return insert(val, acc);
   }, binTree);
 }
+
+function inorderToList(binTree) {
+  if(binTree(label) === null) return [];
+  return [].concat(inorderToList(binTree(left))).concat(binTree(label)).concat(inorderToList(binTree(right)));
+}
