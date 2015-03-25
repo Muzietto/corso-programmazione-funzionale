@@ -26,14 +26,16 @@ describe('chapter 6',function(){
     });
   });
   describe('exercise A.1',function(){
-    it.skip('insert works are we wish',function(){
+    it('insert works are we wish',function(){
       var nodes4 = node(4,empty(),empty());
-      var nodes34 = insert(3,node4);
-      expect(printTree(nodes34)).to.be.equal('node(3,empty(),node(4,empty(),empty()))');
-      
+      var nodes34 = insert(3,nodes4);
+      expect(printTree(nodes34)).to.be.equal('node(4,node(3,empty(),empty()),empty())');
+      var nodesEmpty = insert(3, empty());
+      expect(printTree(nodesEmpty)).to.be.equal('node(3,empty(),empty())');
       var nodes1234 = insert(2,insert(1,nodes34));
-      expect(printTree(nodes1234)).to.be.equal('result_here');
-      expect(nodes1234(right)(left)(label)).to.be.equal('result_here');
+      expect(printTree(nodes1234)).to.be.equal('node(4,node(3,node(1,empty(),node(2,empty(),empty())),empty()),empty())');
+      expect(nodes1234(left)(right)(label)).to.be.null;
+      expect(nodes1234(left)(left)(right)(label)).to.be.equal(2);
     })
   });
   describe('exercise A.2',function(){
@@ -42,14 +44,14 @@ describe('chapter 6',function(){
       this.strList1 = [ "pesca", "banana", "uva", "albicocca", "nocciola", "ribes" ];
       this.strList2 = [ "limone", "ciliegia", "mela", "pera", "noce"  ];      
     });
-    it.skip('insertFromList produces intTree',function(){
-      
+    it('insertFromList produces intTree',function(){
+      expect(printTree(insertFromList(this.intList, empty()))).to.be.equal('node(20,node(10,empty(),node(15,empty(),empty())),node(60,node(40,node(30,empty(),node(35,node(32,empty(),empty()),node(37,empty(),empty()))),node(50,node(42,empty(),empty()),node(58,empty(),empty()))),node(100,node(70,empty(),node(75,empty(),empty())),empty())))');      
     });
-    it.skip('insertFromList produces strTree1',function(){
-      
+    it('insertFromList produces strTree1',function(){
+      expect(printTree(insertFromList(this.strList1, empty()))).to.be.equal('node(pesca,node(banana,node(albicocca,empty(),empty()),node(nocciola,empty(),empty())),node(uva,node(ribes,empty(),empty()),empty()))');          
     })
-    it.skip('insertFromList produces strTree2',function(){
-      
+    it('insertFromList produces strTree2',function(){
+      expect(printTree(insertFromList(this.strList2, insertFromList(this.strList1, empty())))).to.be.equal('node(pesca,node(banana,node(albicocca,empty(),empty()),node(nocciola,node(limone,node(ciliegia,empty(),empty()),node(mela,empty(),empty())),node(pera,node(noce,empty(),empty()),empty()))),node(uva,node(ribes,empty(),empty()),empty()))');          
     })
   });
   describe('exercise A.3',function(){
