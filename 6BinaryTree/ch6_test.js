@@ -70,5 +70,30 @@ describe('chapter 6',function(){
       expect(inorderToList(this.strTree2)).to.deep.equal(["albicocca", "banana", "ciliegia", "limone", "mela", "nocciola", "noce", "pera", "pesca", "ribes", "uva"]);
     })
   });
+  describe('exercise B.2',function(){
+    beforeEach(function(){
+      this.intTree = insertFromList([ 20, 10, 60, 15, 40, 100, 30, 50, 70, 35, 42, 58, 75, 32, 37 ], empty())
+      this.strTree1 = insertFromList([ "pesca", "banana", "uva", "albicocca", "nocciola", "ribes" ], empty());
+      this.strTree2 = insertFromList([ "limone", "ciliegia", "mela", "pera", "noce"  ], this.strTree1);  
+      this.isEven = function(val){
+        return (val % 2) === 0;        
+      }
+      this.isBig = function(val){
+        return val >= 1000;        
+      }
+      this.isGood = function(val){
+        return (val === "pesca" || val === "mela" || val === "fragola");
+      }
+      this.isNotGood = function(val){
+        return !(val === "pesca" || val === "mela" || val === "fragola");
+      }
+    });
+    it('filterToList works are we wish',function(){
+      expect(filterToList(this.isEven, this.intTree)).to.deep.equal([10, 20, 30, 32, 40, 42, 50, 58, 60, 70, 100]);
+      expect(filterToList(this.isBig, this.intTree)).to.deep.equal([]);
+      expect(filterToList(this.isGood, this.strTree2)).to.deep.equal(["mela", "pesca"]);
+      expect(filterToList(this.isNotGood, this.strTree2)).to.deep.equal(["albicocca", "banana", "ciliegia", "limone", "nocciola", "noce", "pera", "ribes", "uva"]);
+    })
+  });
 });
 
