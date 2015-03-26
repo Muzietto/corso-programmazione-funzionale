@@ -95,5 +95,20 @@ describe('chapter 6',function(){
       expect(filterToList(this.isNotGood, this.strTree2)).to.deep.equal(["albicocca", "banana", "ciliegia", "limone", "nocciola", "noce", "pera", "ribes", "uva"]);
     })
   });
+  describe('exercise C.1',function(){
+    beforeEach(function(){
+      this.intTree = insertFromList([ 20, 10, 60, 15, 40, 100, 30, 50, 70, 35, 42, 58, 75, 32, 37 ], empty())
+      this.strTree1 = insertFromList([ "pesca", "banana", "uva", "albicocca", "nocciola", "ribes" ], empty());
+      this.strTree2 = insertFromList([ "limone", "ciliegia", "mela", "pera", "noce"  ], this.strTree1);      
+    });
+    it('search works are we wish',function(){
+      expect(search(60, this.intTree)).to.be.true;
+      expect(search('uva', this.strTree1)).to.be.true;
+      expect(search('noce', this.strTree2)).to.be.true;
+      expect(search(153, this.intTree)).to.be.false;
+      expect(search('mela', this.strTree1)).to.be.false;
+      expect(search('papaya', this.strTree2)).to.be.false;
+    })
+  });
 });
 

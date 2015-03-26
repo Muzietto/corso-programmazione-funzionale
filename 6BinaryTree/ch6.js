@@ -18,10 +18,16 @@ function inorderToList(binTree) {
 }
 
 function filterToList(pred, binTree) {
-  console.log(printTree(binTree))
   if(binTree(label) === null) return [];
   if(pred(binTree(label))){
     return [].concat(filterToList(pred, binTree(left))).concat(binTree(label)).concat(filterToList(pred, binTree(right)));
   }
   return [].concat(filterToList(pred, binTree(left))).concat(filterToList(pred, binTree(right)));
+}
+
+function search(ele, binTree) {
+  if (binTree(label) === null) return false;
+  if (binTree(label) === ele) return true;
+  if (binTree(label) >= ele) return search(ele, binTree(left));
+  if (binTree(label) <= ele) return search(ele, binTree(right));
 }
