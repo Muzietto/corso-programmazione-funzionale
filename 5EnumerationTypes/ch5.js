@@ -36,11 +36,6 @@ function areaSum(){
   return shapes.reduce(function(acc, curr){ 
     return some(value(acc) + (isSome(area(curr)) ? value(area(curr)) : 0)); }, some(0));
 }
-
-function value(option){
-  return option(function(x){ return x; });
-}
-
 ///////////////// ES. 2 ///////////////////////
 function head_tailOpt(list){
   return couple(
