@@ -1,62 +1,99 @@
 ////////////////// ES. A.1 ///////////////////////////
-function insert(x, btree){
-  if (btree(label) === x) return btree;
-  if (btree(label) === null) return node(x, empty(), empty());
-  if (btree(label) >= x) return node(btree(label), insert(x, btree(left)), btree(right));
-  if (btree(label) <= x) return node(btree(label), btree(left), insert(x, btree(right)));
+function insert(x, btree) {
+  'use strict';
+  if (btree(label) === x) {
+    return btree;
+  }
+  if (btree(label) === null) {
+    return node(x, empty(), empty());
+  }
+  if (btree(label) >= x) {
+    return node(btree(label), insert(x, btree(left)), btree(right));
+  }
+  if (btree(label) <= x) {
+    return node(btree(label), btree(left), insert(x, btree(right)));
+  }
 }
 
+////////////////// ES. A.2 ///////////////////////////
 function insertFromList(list, binTree) {
-  return list.reduce(function(acc, val) {
+  'use strict';
+  return list.reduce(function (acc, val) {
     return insert(val, acc);
   }, binTree);
 }
 
+////////////////// ES. B.1 ///////////////////////////
 function inorderToList(binTree) {
-  if (binTree(label) === null) return [];
+  'use strict';
+  if (binTree(label) === null) {
+    return [];
+  }
   return [].concat(inorderToList(binTree(left))).concat(binTree(label)).concat(inorderToList(binTree(right)));
 }
 
+////////////////// ES. B.2 ///////////////////////////
 function filterToList(pred, binTree) {
-  if (binTree(label) === null) return [];
-  if (pred(binTree(label))){
+  'use strict';
+  if (binTree(label) === null) {
+    return [];
+  }
+  if (pred(binTree(label))) {
     return [].concat(filterToList(pred, binTree(left))).concat(binTree(label)).concat(filterToList(pred, binTree(right)));
   }
   return [].concat(filterToList(pred, binTree(left))).concat(filterToList(pred, binTree(right)));
 }
 
+////////////////// ES. C.1 ///////////////////////////
 function search(ele, binTree) {
-  if (binTree(label) === null) return false;
-  if (binTree(label) === ele) return true;
-  if (binTree(label) >= ele) return search(ele, binTree(left));
-  if (binTree(label) <= ele) return search(ele, binTree(right));
+  'use strict';
+  if (binTree(label) === null) {
+    return false;
+  }
+  if (binTree(label) === ele) {
+    return true;
+  }
+  if (binTree(label) >= ele) {
+    return search(ele, binTree(left));
+  }
+  if (binTree(label) <= ele) {
+    return search(ele, binTree(right));
+  }
 }
 
+////////////////// ES. C.2 ///////////////////////////
 function searchPath(ele, binTree) {
+  'use strict';
   var path = [];
   return helper(ele, binTree);
   function helper(elem, tree) {
-    if (tree(label) === null) return [];
+    if (tree(label) === null) {
+      return [];
+    }
     if (tree(label) === elem) {
       path.push(elem);
-      return path;  
-    } 
+      return path;
+    }
     if (tree(label) >= elem) {
-      path.push(tree(label))
+      path.push(tree(label));
       return helper(elem, tree(left));
-    };
+    }
     if (tree(label) <= elem) {
-      path.push(tree(label))
-      return helper(elem, tree(right));    
-    }; 
-  };
+      path.push(tree(label));
+      return helper(elem, tree(right));
+    }
+  }
 }
 
+////////////////// ES. D.1 ///////////////////////////
 function count(binTree) {
+  'use strict';
   var result = {node: 0, leaf: 0};
   return helper(binTree);
   function helper(tree) {
-    if (tree(label) === null) return result;
+    if (tree(label) === null) {
+      return result;
+    }
     if (isEmptyLeaf(tree(left)) && isEmptyLeaf(tree(right))) {
       result.node = result.node + 1;
       result.leaf = result.leaf + 1;
@@ -71,36 +108,53 @@ function count(binTree) {
       result.node = result.node + 1;
       helper(tree(left));
       return result;
-    } else {
-      result.node = result.node + 1;
-      helper(tree(left));
-      helper(tree(right));
-      return result;
     }
-  }  
+    result.node = result.node + 1;
+    helper(tree(left));
+    helper(tree(right));
+    return result;
+  }
 }
 
+////////////////// ES. D.2 ///////////////////////////
 function min(binTree) {
-  if (binTree(label) === null) return none();
+  'use strict';
+  if (binTree(label) === null) {
+    return none();
+  }
   if (!isEmptyLeaf(binTree(left))) {
-    return min(binTree(left));    
+    return min(binTree(left));
   }
   return some(binTree(label));
 }
 
+////////////////// ES. D.3 ///////////////////////////
 function subtree(ele, binTree) {
-  if (binTree(label) === null) return empty();
-  if (binTree(label) === ele) return node(ele, binTree(left), binTree(right));
-  if (binTree(label) >= ele) return subtree(ele, binTree(left));
-  if (binTree(label) <= ele) return subtree(ele, binTree(right));
+  'use strict';
+  if (binTree(label) === null) {
+    return empty();
+  }
+  if (binTree(label) === ele) {
+    return node(ele, binTree(left), binTree(right));
+  }
+  if (binTree(label) >= ele) {
+    return subtree(ele, binTree(left));
+  }
+  if (binTree(label) <= ele) {
+    return subtree(ele, binTree(right));
+  }
 }
 
+////////////////// ES. D.4 ///////////////////////////
 function depthToList(depth, binTree) {
+  'use strict';
   var node = [];
   return helper(depth, binTree);
   function helper(dep, tree) {
-    if (tree(label) === null) return node;
-    if (dep === 0){
+    if (tree(label) === null) {
+      return node;
+    }
+    if (dep === 0) {
       node.push(tree(label));
       return node;
     }
