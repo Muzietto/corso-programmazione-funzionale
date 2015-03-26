@@ -26,7 +26,7 @@ describe('chapter 6',function(){
     });
   });
   describe('exercise A.1',function(){
-    it('insert works are we wish',function(){
+    it('insert works as we wish',function(){
       var nodes4 = node(4,empty(),empty());
       var nodes34 = insert(3,nodes4);
       expect(printTree(nodes34)).to.be.equal('node(4,node(3,empty(),empty()),empty())');
@@ -55,7 +55,7 @@ describe('chapter 6',function(){
     });
   });
   describe('exercise A.3',function(){
-    it.skip('intToFloatTree works are we wish',function(){
+    it.skip('intToFloatTree works as we wish',function(){
     });
   });
   describe('exercise B.1',function(){
@@ -64,7 +64,7 @@ describe('chapter 6',function(){
       this.strTree1 = insertFromList([ "pesca", "banana", "uva", "albicocca", "nocciola", "ribes" ], empty());
       this.strTree2 = insertFromList([ "limone", "ciliegia", "mela", "pera", "noce"  ], this.strTree1);      
     });
-    it('inorderToList works are we wish',function(){
+    it('inorderToList works as we wish',function(){
       expect(inorderToList(this.intTree)).to.deep.equal([10, 15, 20, 30, 32, 35, 37, 40, 42, 50, 58, 60, 70, 75, 100]);
       expect(inorderToList(this.strTree1)).to.deep.equal(["albicocca", "banana", "nocciola", "pesca", "ribes", "uva"]);
       expect(inorderToList(this.strTree2)).to.deep.equal(["albicocca", "banana", "ciliegia", "limone", "mela", "nocciola", "noce", "pera", "pesca", "ribes", "uva"]);
@@ -88,7 +88,7 @@ describe('chapter 6',function(){
         return !(val === "pesca" || val === "mela" || val === "fragola");
       };
     });
-    it('filterToList works are we wish',function(){
+    it('filterToList works as we wish',function(){
       expect(filterToList(this.isEven, this.intTree)).to.deep.equal([10, 20, 30, 32, 40, 42, 50, 58, 60, 70, 100]);
       expect(filterToList(this.isBig, this.intTree)).to.deep.equal([]);
       expect(filterToList(this.isGood, this.strTree2)).to.deep.equal(["mela", "pesca"]);
@@ -101,7 +101,7 @@ describe('chapter 6',function(){
       this.strTree1 = insertFromList([ "pesca", "banana", "uva", "albicocca", "nocciola", "ribes" ], empty());
       this.strTree2 = insertFromList([ "limone", "ciliegia", "mela", "pera", "noce"  ], this.strTree1);      
     });
-    it('search works are we wish',function(){
+    it('search works as we wish',function(){
       expect(search(60, this.intTree)).to.be.true;
       expect(search('uva', this.strTree1)).to.be.true;
       expect(search('noce', this.strTree2)).to.be.true;
@@ -114,7 +114,7 @@ describe('chapter 6',function(){
     beforeEach(function(){
       this.intTree = insertFromList([ 20, 10, 60, 15, 40, 100, 30, 50, 70, 35, 42, 58, 75, 32, 37 ], empty());
     });
-    it('searchPath works are we wish',function(){
+    it('searchPath works as we wish',function(){
       expect(searchPath(10, this.intTree)).to.deep.equal([20, 10]);
       expect(searchPath(20, this.intTree)).to.deep.equal([20]);
       expect(searchPath(40, this.intTree)).to.deep.equal([20, 60, 40]);
@@ -128,7 +128,7 @@ describe('chapter 6',function(){
       this.strTree1 = insertFromList([ "pesca", "banana", "uva", "albicocca", "nocciola", "ribes" ], empty());
       this.strTree2 = insertFromList([ "limone", "ciliegia", "mela", "pera", "noce"  ], this.strTree1);  
     });
-    it('count works are we wish',function(){
+    it('count works as we wish',function(){
       expect(count(this.intTree)).to.deep.equal({node: 15, leaf: 6});
       expect(count(this.strTree1)).to.deep.equal({node: 6, leaf: 3});
       expect(count(this.strTree2)).to.deep.equal({node: 11, leaf: 5});
@@ -140,7 +140,7 @@ describe('chapter 6',function(){
       this.strTree1 = insertFromList([ "pesca", "banana", "uva", "albicocca", "nocciola", "ribes" ], empty());
       this.strTree2 = insertFromList([ "limone", "ciliegia", "mela", "pera", "noce"  ], this.strTree1);  
     });
-    it('min works are we wish',function(){
+    it('min works as we wish',function(){
       expect(value(min(this.intTree))).to.deep.equal(10);  
       expect(value(min(this.strTree2))).to.deep.equal('albicocca');  
       expect(value(min(empty()))).to.be.null;  
@@ -152,7 +152,7 @@ describe('chapter 6',function(){
       this.strTree1 = insertFromList([ "pesca", "banana", "uva", "albicocca", "nocciola", "ribes" ], empty());
       this.strTree2 = insertFromList([ "limone", "ciliegia", "mela", "pera", "noce"  ], this.strTree1);  
     });
-    it('subtree works are we wish',function(){
+    it('subtree works as we wish',function(){
       expect(value(min(subtree(10, this.intTree)))).to.deep.equal(10);
       expect(value(min(subtree(15, this.intTree)))).to.deep.equal(15);
       expect(value(min(subtree(60, this.intTree)))).to.deep.equal(30);
@@ -167,7 +167,7 @@ describe('chapter 6',function(){
     beforeEach(function(){
       this.intTree = insertFromList([ 20, 10, 60, 15, 40, 100, 30, 50, 70, 35, 42, 58, 75, 32, 37 ], empty());
     });
-    it('depthToList works are we wish',function(){
+    it('depthToList works as we wish',function(){
     expect(depthToList(0, this.intTree)).to.deep.equal([20]);
     expect(depthToList(1, this.intTree)).to.deep.equal([10, 60]);
     expect(depthToList(2, this.intTree)).to.deep.equal([15, 40, 100]);
