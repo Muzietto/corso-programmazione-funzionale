@@ -2,19 +2,19 @@ function grade(student, mark) {
   'use strict';
   return function (w) {
     return w(student, mark);
-  }   
+  };
 }
 
 function printGrade(grade) {
   'use strict';
-  return grade(function(student, mark) {
+  return grade(function (student, mark) {
     return student + ': ' + mark;
-  });  
+  });
 }
 
 function printListOfGrade(listaOfGrade) {
   'use strict';
-  return listaOfGrade.map(function(val) {
+  return listaOfGrade.map(function (val) {
     return printGrade(val);
   }).join(', ');
 }
@@ -34,6 +34,7 @@ function valuta(student, mark) {
 }
 
 function fromMarkToGrade(mark) {
+  'use strict';
   return mark(valuta);
 }
 
@@ -53,9 +54,9 @@ function valutaList(lista) {
 function creaValList(names, grades) {
   'use strict';
   var minLength = Math.min(names.length, grades.length), result = [], i;
-  for(i = 0; i < minLength; i = i + 1) {
+  for (i = 0; i < minLength; i = i + 1) {
     result.push(grade(names[i], grades[i]));
-  }  
+  }
   return result;
 }
 
@@ -64,7 +65,7 @@ function media(lista) {
   var sommaVoti = 0, numeroVoti = 0;
   function sommaAndConta(lista) {
     if (lista.length > 0) {
-      sommaVoti = sommaVoti + lista[0](function(student, mark) {
+      sommaVoti = sommaVoti + lista[0](function (student, mark) {
         return mark;
       });
       numeroVoti = numeroVoti + 1;
@@ -77,14 +78,15 @@ function media(lista) {
 
 function separa(lista) {
   'use strict';
-  var result = {promossi: [], bocciati: []};
-  lista.reduce(function(acc, val) {
-    if(val(function(std, grade) {return grade;}) >= 18) {
-      result.promossi.push(val);  
-    } else {
-      result.bocciati.push(val); 
+  var result;
+  result = lista.reduce(function (acc, val) {
+    if (val(function (std, grade) {return grade; }) >= 18) {
+      acc.promossi.push(val);
+      return acc;
     }
-  }, result);
+    acc.bocciati.push(val);
+    return acc;
+  }, {promossi: [], bocciati: []});
   result.promossi = printListOfGrade(result.promossi);
   result.bocciati = printListOfGrade(result.bocciati);
   return result;
