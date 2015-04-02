@@ -32,7 +32,11 @@ var Seq = (function(){
   }
 
   function nth(ord,thunk){
-    return (ord === 0) ? first(thunk()) : nth(ord - 1,second(thunk()));
+    if (ord === 0) {
+      return first(thunk());
+    }
+    return nth(ord - 1,second(thunk()));
+    //return (ord === 0) ? first(thunk()) : nth(ord - 1,second(thunk()));
   }
 
   function skip(ord,thunk){
@@ -45,11 +49,20 @@ var Seq = (function(){
       return (ord === 0) ? arraySeq(acc) : aux(ord - 1,[nth(ord - 1,thunk)].concat(acc));
     }
   }
+  
+  function map(fun, seq) {
+    return sequence(function (x) {
+      var res = fun(first(seq()));  
+      seq = second(seq());
+      return res;
+    }, first(seq()));
+  }
 
 return {
   sequence : sequence,
   skip : skip,
   take : take,
-  nth : nth
+  nth : nth,
+  map: map
 }
 }());
