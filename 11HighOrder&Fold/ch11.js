@@ -72,5 +72,32 @@ function minWithFold(array) {
       }, Math.pow(2,32) - 1);
 }
 
+function mapWithFold(fun, array) {
+  return fold(array, function(acc, curr) {
+    acc.unshift(fun(curr));
+    return acc;
+  }, []);
+}
 
 
+function appendWithFold(arr1, arr2) {
+  return fold(arr2.reverse(), function(acc, curr) {
+    acc.push(curr);
+    return acc;
+  }, arr1);
+}
+
+function concatWithFold(stringList) {
+  return fold(stringList, function(acc, curr) {
+    return curr + acc;    
+  }, '');
+}
+
+
+function unzip(zippedList) {
+  return fold(zippedList.reverse(), function(acc, curr) {
+    acc[0].push(curr[0]);
+    acc[1].push(curr[1]);
+    return acc;
+  }, [[], []]);
+}
