@@ -33,5 +33,15 @@ describe('in chapter 12',function(){
     it('filter works as expected',function(){
       expect(map.filter(function(key) {return key % 2 === 0;}, {2: 25, 5: 28, 6: 25})).to.be.eql({2: 25, 6: 25});
     });
+    it('exists works as expected',function(){
+      expect(map.exists(function(key) {return key % 2 === 0;}, {2: 25, 5: 28, 6: 25})).to.be.true;
+    });
+    it('forall works as expected',function(){
+      expect(map.forall(function(key) {return key % 2 === 0;}, {2: 25, 8: 28, 6: 25})).to.be.true;
+      expect(map.forall(function(key) {return key % 2 === 0;}, {2: 25, 5: 28, 6: 25})).to.be.false;
+    });
+    it('fold works as expected',function(){
+      expect(map.fold(function(acc, key, value) {return acc + value}, 0, {2: 25, 8: 28, 6: 25})).to.be.equal(78);
+    });
   });
 });
