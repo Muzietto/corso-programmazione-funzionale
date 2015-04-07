@@ -1,26 +1,27 @@
+'use strict';
 function grade(student, mark) {
-  'use strict';
+
   return function (w) {
     return w(student, mark);
   };
 }
 
 function printGrade(grade) {
-  'use strict';
+
   return grade(function (student, mark) {
     return student + ': ' + mark;
   });
 }
 
 function printListOfGrade(listaOfGrade) {
-  'use strict';
+
   return listaOfGrade.map(function (val) {
     return printGrade(val);
   }).join(', ');
 }
 
 function valuta(student, mark) {
-  'use strict';
+
   if (mark < 18) {
     return grade(student, 'insufficiente');
   }
@@ -34,34 +35,34 @@ function valuta(student, mark) {
 }
 
 function fromMarkToGrade(mark) {
-  'use strict';
+
   return mark(valuta);
 }
 
 function valutaList(lista) {
-  'use strict';
+
   var result = [];
   return helper(lista);
   function helper(lista) {
     if (lista.length === 0) {
       return result;
     }
-    result.push(fromMarkToGrade(lista[0]));
+    result = result.concat(fromMarkToGrade(lista[0]));
     return helper(lista.slice(1, lista.length));
   }
 }
 
 function creaValList(names, grades) {
-  'use strict';
+
   var minLength = Math.min(names.length, grades.length), result = [], i;
   for (i = 0; i < minLength; i = i + 1) {
-    result.push(grade(names[i], grades[i]));
+    result = result.concat(grade(names[i], grades[i]));
   }
   return result;
 }
 
 function media(lista) {
-  'use strict';
+
   var sommaVoti = 0, numeroVoti = 0;
   function sommaAndConta(lista) {
     if (lista.length > 0) {
@@ -77,14 +78,14 @@ function media(lista) {
 }
 
 function separa(lista) {
-  'use strict';
+
   var result;
   result = lista.reduce(function (acc, val) {
     if (val(function (std, grade) {return grade; }) >= 18) {
-      acc.promossi.push(val);
+      acc.promossi = acc.promossi.concat(val);
       return acc;
     }
-    acc.bocciati.push(val);
+    acc.bocciati = acc.bocciati.concat(val);
     return acc;
   }, {promossi: [], bocciati: []});
   result.promossi = printListOfGrade(result.promossi);

@@ -1,8 +1,11 @@
+'use strict';
 function valv(name, grade) {
+
   return {stud: name, voto: grade};
 }
 
 function valuta(record) {
+
   if (record.voto < 18) {
     return {id: record.stud, giudizio: 'insufficiente'};
   }
@@ -12,14 +15,16 @@ function valuta(record) {
   if (record.voto <= 27) {
     return {id: record.stud, giudizio: 'buono'};
   }
-  return {id: record.stud, giudizio: 'ottimo'};  
+  return {id: record.stud, giudizio: 'ottimo'};
 }
 
 function valutaListr(listOFRecords) {
+
   return listOFRecords.map(valuta);
 }
 
 function creaValListR(studenti, voti) {
+
   if(studenti[0] === undefined) {
     return [];
   }

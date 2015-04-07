@@ -1,17 +1,22 @@
+'use strict';
 function sumWithFoldl(array) {
+
   return foldl(array, function(acc,curr){ return acc + curr; }, 0);
 }
 
 function mulWithFoldl(array) {
+
   return foldl(array, function(acc,curr){ return acc * curr; }, 1);
 }
 
 function countWithFoldl(array) {
+
   return foldl(array, function(acc,curr){ return acc + 1; }, 0);
 }
 
 function maxWithFoldl(array) {
-  return foldl(array, function(acc,curr){ 
+
+  return foldl(array, function(acc,curr){
         if (acc > curr) {
           return acc;
         }
@@ -20,7 +25,8 @@ function maxWithFoldl(array) {
 }
 
 function minWithFoldl(array) {
-  return foldl(array, function(acc,curr){ 
+
+  return foldl(array, function(acc,curr){
         if (acc < curr) {
           return acc;
         }
@@ -29,33 +35,37 @@ function minWithFoldl(array) {
 }
 
 function revWithFoldl(array) {
-  return foldl(array, function(acc,curr){ 
-        acc.unshift(curr);
-        return acc;
+
+  return foldl(array, function(acc,curr){
+        return [curr].concat(acc);
       }, []);
 }
 
 function sumWithFold(array) {
+
   return fold(array, function(acc, curr){ return acc + curr; }, 0);
 }
 
 function revWithFold(array) {
-  return fold(array, function(acc, curr){ 
-        acc.push(curr);
-        return acc;
+
+  return fold(array, function(acc, curr){
+        return acc.concat(curr);
       }, []);
 }
 
 function mulWithFold(array) {
+
   return fold(array, function(acc, curr){ return acc * curr; }, 1);
 }
 
 function countWithFold(array) {
+
   return fold(array, function(acc,curr){ return acc + 1; }, 0);
 }
 
 function maxWithFold(array) {
-  return fold(array, function(acc,curr){ 
+
+  return fold(array, function(acc,curr){
         if (acc > curr) {
           return acc;
         }
@@ -64,7 +74,8 @@ function maxWithFold(array) {
 }
 
 function minWithFold(array) {
-  return fold(array, function(acc,curr){ 
+
+  return fold(array, function(acc,curr){
         if (acc < curr) {
           return acc;
         }
@@ -73,31 +84,33 @@ function minWithFold(array) {
 }
 
 function mapWithFold(fun, array) {
+
   return fold(array, function(acc, curr) {
-    acc.unshift(fun(curr));
-    return acc;
+    return [fun(curr)].concat(acc);
   }, []);
 }
 
 
 function appendWithFold(arr1, arr2) {
+
   return fold(arr2.reverse(), function(acc, curr) {
-    acc.push(curr);
-    return acc;
+    return acc.concat(curr);
   }, arr1);
 }
 
 function concatWithFold(stringList) {
+
   return fold(stringList, function(acc, curr) {
-    return curr + acc;    
+    return curr + acc;
   }, '');
 }
 
 
 function unzip(zippedList) {
+
   return fold(zippedList.reverse(), function(acc, curr) {
-    acc[0].push(curr[0]);
-    acc[1].push(curr[1]);
+    acc[0] = acc[0].concat(curr[0]);
+    acc[1] = acc[1].concat(curr[1]);
     return acc;
   }, [[], []]);
 }

@@ -1,6 +1,7 @@
+
 ////////////////// ES. A.1 ///////////////////////////
 function insert(x, btree) {
-  'use strict';
+
   if (btree(label) === x) {
     return btree;
   }
@@ -17,7 +18,7 @@ function insert(x, btree) {
 
 ////////////////// ES. A.2 ///////////////////////////
 function insertFromList(list, binTree) {
-  'use strict';
+
   return list.reduce(function (acc, val) {
     return insert(val, acc);
   }, binTree);
@@ -25,7 +26,7 @@ function insertFromList(list, binTree) {
 
 ////////////////// ES. B.1 ///////////////////////////
 function inorderToList(binTree) {
-  'use strict';
+
   if (binTree(label) === null) {
     return [];
   }
@@ -34,7 +35,7 @@ function inorderToList(binTree) {
 
 ////////////////// ES. B.2 ///////////////////////////
 function filterToList(pred, binTree) {
-  'use strict';
+
   if (binTree(label) === null) {
     return [];
   }
@@ -46,7 +47,7 @@ function filterToList(pred, binTree) {
 
 ////////////////// ES. C.1 ///////////////////////////
 function search(ele, binTree) {
-  'use strict';
+
   if (binTree(label) === null) {
     return false;
   }
@@ -63,7 +64,7 @@ function search(ele, binTree) {
 
 ////////////////// ES. C.2 ///////////////////////////
 function searchPath(ele, binTree) {
-  'use strict';
+
   var path = [];
   return helper(ele, binTree);
   function helper(elem, tree) {
@@ -71,15 +72,14 @@ function searchPath(ele, binTree) {
       return [];
     }
     if (tree(label) === elem) {
-      path.push(elem);
-      return path;
+      return path.concat(elem);
     }
     if (tree(label) >= elem) {
-      path.push(tree(label));
+      path = path.concat(tree(label));
       return helper(elem, tree(left));
     }
     if (tree(label) <= elem) {
-      path.push(tree(label));
+      path = path.concat(tree(label));
       return helper(elem, tree(right));
     }
   }
@@ -87,7 +87,7 @@ function searchPath(ele, binTree) {
 
 ////////////////// ES. D.1 ///////////////////////////
 function count(binTree) {
-  'use strict';
+
   var result = {node: 0, leaf: 0};
   return helper(binTree);
   function helper(tree) {
@@ -118,7 +118,7 @@ function count(binTree) {
 
 ////////////////// ES. D.2 ///////////////////////////
 function min(binTree) {
-  'use strict';
+
   if (binTree(label) === null) {
     return none();
   }
@@ -130,7 +130,7 @@ function min(binTree) {
 
 ////////////////// ES. D.3 ///////////////////////////
 function subtree(ele, binTree) {
-  'use strict';
+
   if (binTree(label) === null) {
     return empty();
   }
@@ -147,7 +147,7 @@ function subtree(ele, binTree) {
 
 ////////////////// ES. D.4 ///////////////////////////
 function depthToList(depth, binTree) {
-  'use strict';
+
   var node = [];
   return helper(depth, binTree);
   function helper(dep, tree) {
@@ -155,7 +155,7 @@ function depthToList(depth, binTree) {
       return node;
     }
     if (dep === 0) {
-      node.push(tree(label));
+      node = node.concat(tree(label));
       return node;
     }
     helper(dep - 1, tree(left));

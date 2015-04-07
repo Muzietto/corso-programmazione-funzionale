@@ -1,12 +1,13 @@
+'use strict';
 function surname(student) {
-	'use strict';
+
 	return function (w) {
 		return w(student);
 	};
 }
 
 function category(abbr) {
-	'use strict';
+
 	if (abbr === 'd') {
 		return function (w) {
 			return w('Daycare');
@@ -25,21 +26,21 @@ function category(abbr) {
 }
 
 function childDes(name, cat) {
-	'use strict';
+
 	return function (w) {
 		return w(name, cat);
 	};
 }
 
 function stampChildDes(childDes) {
-	'use strict';
+
 	return childDes(function (name, cat) {
 		return value(name) + ': ' + value(cat);
 	});
 }
 
 function number(category, childColl) {
-	'use strict';
+
 	if (childColl[0] === undefined) {
 		return 0;
 	}
@@ -50,14 +51,14 @@ function number(category, childColl) {
 }
 
 function takeCat(childDes) {
-	'use strict';
+
 	return childDes(function (name, dest) {
 		return value(dest);
 	});
 }
 
 function pay(name, childColl) {
-	'use strict';
+
 	var sibiling = false;
 
 	function helper(helperChildColl) {
@@ -77,7 +78,7 @@ function pay(name, childColl) {
 }
 
 function costPerCategory(childDes) {
-  'use strict';
+
 	var cat = takeCat(childDes);
 	if (cat === 'Daycare') {
 		return 225;
@@ -91,7 +92,7 @@ function costPerCategory(childDes) {
 }
 
 function takeSurname(childDes) {
-	'use strict';
+
 	return childDes(function (name, dest) {
 		return value(name);
 	});

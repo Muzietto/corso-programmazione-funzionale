@@ -1,5 +1,5 @@
 // namespace Seq
-'use strict'
+'use strict';
 var Seq = (function(){
 
   // stateless sequence
@@ -16,7 +16,7 @@ var Seq = (function(){
       );
     }
   }
-  
+
   function arraySeq(array,pos){
     pos = pos || 0;
     return function(){
@@ -49,10 +49,10 @@ var Seq = (function(){
       return (ord === 0) ? arraySeq(acc) : aux(ord - 1,[nth(ord - 1,thunk)].concat(acc));
     }
   }
-  
+
   function map(fun, seq) {
     return sequence(function (x) {
-      var res = fun(first(seq()));  
+      var res = fun(first(seq()));
       seq = second(seq());
       return res;
     }, first(seq()));
