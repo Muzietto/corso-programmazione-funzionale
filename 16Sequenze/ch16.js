@@ -1,9 +1,9 @@
 // namespace Seq
-'use strict';
 var Seq = (function(){
 
   // stateless sequence
-  function sequence(seqFun,seed){
+  function sequence(seqFun, seed){
+    'use strict';
     // handle finite sequences
     if (Array.isArray(seqFun)) return arraySeq(seqFun,0);
     return function(){
@@ -14,10 +14,11 @@ var Seq = (function(){
         seed,
         sequence(seqFun,nextSeed)
       );
-    }
+    };
   }
 
   function arraySeq(array,pos){
+    'use strict';
     pos = pos || 0;
     return function(){
       if (typeof array[pos] !== 'undefined'){
@@ -31,7 +32,8 @@ var Seq = (function(){
     };
   }
 
-  function nth(ord,thunk){
+  function nth(ord, thunk){
+    'use strict';
     if (ord === 0) {
       return first(thunk());
     }
@@ -39,11 +41,13 @@ var Seq = (function(){
     //return (ord === 0) ? first(thunk()) : nth(ord - 1,second(thunk()));
   }
 
-  function skip(ord,thunk){
+  function skip(ord, thunk){
+    'use strict';
     return (ord === 0) ? thunk : skip(ord - 1,second(thunk()));
   }
 
-  function take(ord,thunk){
+  function take(ord, thunk){
+    'use strict';
     return aux(ord,[]);
     function aux(ord,acc){
       return (ord === 0) ? arraySeq(acc) : aux(ord - 1,[nth(ord - 1,thunk)].concat(acc));
@@ -51,25 +55,47 @@ var Seq = (function(){
   }
 
   function map(fun, seq) {
+    'use strict';
     return function() {
       return couple(
         fun(first(seq())),
         map(fun, second(seq()))
       );     
-    }
-
+    };
   }
 
-/*
-  function filter(fun, seq) {}
-*/
+  function filter(fun, seq) {
+    'use strict';
+    return function() {
+      var fst = first(seq());
+      if(fun(fst)) {
+        return couple(
+          fst,
+          filter(fun, second(seq()))
+        );   
+      }
+      return filter(fun, second(seq()))();
+    };    
+  }
 
+  function fib(now, next) {
+    'use strict';
+    return function(){
+      if (arguments.length > 0) throw 'invalid operation';
+      return couple(
+        now,
+        fib(next, now + next)
+      );
+    };
+  }
+  
   return {
     sequence : sequence,
     skip : skip,
     take : take,
     nth : nth,
     map: map,
-    //filter: filter
-  }
+    filter: filter,
+    fibonacci: fib
+  };
 }());
