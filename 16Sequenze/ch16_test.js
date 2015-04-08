@@ -70,13 +70,13 @@ describe('in chapter 16',function(){
     });
     it('should allow to map sequences over a function',function(){
       var squares = Seq.map(this.square,this.naturals);
-      expect(Seq.nth(3,squares)).to.be.equal(4);
-      expect(Seq.nth(16,squares)).to.be.equal(361);
-      
+      expect(Seq.nth(2,squares)).to.be.equal(4);
+      expect(Seq.nth(15,squares)).to.be.equal(225);
+
       var first10squares = Seq.map(this.square,this.first10);
-      expect(Seq.nth(3,first10squares)).to.be.equal(4);
+      expect(Seq.nth(2,first10squares)).to.be.equal(4);
       try {
-        expect(Seq.nth(16,first10squares)).to.fail;
+        expect(Seq.nth(15,first10squares)).to.fail;
       } catch (err) {
         expect(err).to.be.equal('empty sequence');
       }
@@ -100,4 +100,3 @@ describe('in chapter 16',function(){
     });
   });
 });
-

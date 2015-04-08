@@ -51,18 +51,28 @@ var Seq = (function(){
   }
 
   function map(fun, seq) {
+    return sequence(fun, first(seq()));
+  }
+
+/*
+  function filter(fun, seq) {
     return sequence(function (x) {
-      var res = fun(first(seq()));
+      var res = first(seq());
+      while(!fun(res)) {
+        seq = second(seq());
+        res = first(seq());
+      }
       seq = second(seq());
       return res;
     }, first(seq()));
   }
-
+*/
 return {
   sequence : sequence,
   skip : skip,
   take : take,
   nth : nth,
-  map: map
+  map: map,
+  //filter: filter
 }
 }());
