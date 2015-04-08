@@ -51,28 +51,25 @@ var Seq = (function(){
   }
 
   function map(fun, seq) {
-    return sequence(fun, first(seq()));
+    return function() {
+      return couple(
+        fun(first(seq())),
+        map(fun, second(seq()))
+      );     
+    }
+
   }
 
 /*
-  function filter(fun, seq) {
-    return sequence(function (x) {
-      var res = first(seq());
-      while(!fun(res)) {
-        seq = second(seq());
-        res = first(seq());
-      }
-      seq = second(seq());
-      return res;
-    }, first(seq()));
-  }
+  function filter(fun, seq) {}
 */
-return {
-  sequence : sequence,
-  skip : skip,
-  take : take,
-  nth : nth,
-  map: map,
-  //filter: filter
-}
+
+  return {
+    sequence : sequence,
+    skip : skip,
+    take : take,
+    nth : nth,
+    map: map,
+    //filter: filter
+  }
 }());
