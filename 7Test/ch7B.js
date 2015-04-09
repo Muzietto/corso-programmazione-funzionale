@@ -7,22 +7,13 @@ function surname(student) {
 }
 
 function category(abbr) {
-
-	if (abbr === 'd') {
-		return function (w) {
-			return w('Daycare');
-		};
-	}
-	if (abbr === 'n') {
-		return function (w) {
-			return w('Nursery');
-		};
-	}
-	if (abbr === 'r') {
-		return function (w) {
-			return w('Recreation');
-		};
-	}
+  return function(w){
+    return w({
+      'd' : 'Daycare',
+      'n' : 'Nursery',
+      'r' : 'Recreation'
+    }[abbr]);
+  }
 }
 
 function childDes(name, cat) {
