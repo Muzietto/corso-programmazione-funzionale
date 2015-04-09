@@ -89,6 +89,20 @@ var Seq = (function(){
     };
   }
   
+  function erst(seq) {
+    'use strict';
+    function sift(a, seq) {
+      return filter(function(x) { return x % a !== 0}, seq);
+    }
+    return function() {
+      var fst = nth(0, seq);
+      return couple(
+        fst,
+        erst(sift(fst, skip(1, seq)))
+      );
+    }
+  }
+  
   return {
     sequence : sequence,
     skip : skip,
@@ -96,6 +110,7 @@ var Seq = (function(){
     nth : nth,
     map: map,
     filter: filter,
-    fibonacci: fib
+    fibonacci: fib,
+    eratosthenes: erst
   };
 }());
