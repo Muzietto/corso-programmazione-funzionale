@@ -43,14 +43,14 @@ describe('chapter 5',function(){
       expect(isSome(lastOpt([1,'due',3]))).to.be.true;
       expect(value(lastOpt(list(1,'due',3)))).to.be.equal(3);
     });
-    it.skip('catOpt removes nones from list and unwraps somes',function(){
+    it('catOpt removes nones from list and unwraps somes',function(){
       expect(isEmpty(catOpt([none()]))).to.be.true;
       expect(isEmpty(catOpt(list(none())))).to.be.true;
 
       expect(isEmpty(catOpt([some(1),none()]))).to.be.false;
-      expect(value(catOpt(list(none(),none(),some(1)))[0])).to.be.equal(1);
+      expect(catOpt(list(none(),none(),some(1)))[0]).to.be.equal(1);
     });
-    it.skip('mynth returns somes for existing list elems and none otherwise',function(){
+    it('mynth returns somes for existing list elems and none otherwise',function(){
       expect(isSome(mynth([1],0))).to.be.true;
       expect(value(mynth(list(1),0))).to.be.equal(1);
 
@@ -59,6 +59,21 @@ describe('chapter 5',function(){
 
       expect(isNone(mynth([100],100))).to.be.true;
       expect(isNone(mynth(list(100),100))).to.be.true;
+    });
+  });
+  describe('exercise 3',function(){
+    beforeEach(function(){
+    });
+    it('printVal print the description of the tagged value given in input',function(){
+      expect(printVal(Int(0))).to.be.equal("0 : int;");
+      expect(printVal(Bool(true))).equal("true : bool;");
+      expect(printVal(Int(44-66))).to.be.equal("-22 : int;");
+      expect(printVal(Bool( 10 === 5 + 5 ))).to.be.equal("true : bool;");
+    });
+    it('printTl print a description of the tagged list given in input',function(){
+      expect(printTl([Int(0)])).to.be.equal("0 : int;");
+      expect(printTl([Int(0), Int(1), Bool(true), Int(4), Bool(false)])).to.be.equal("0 : int;1 : int;true : bool;4 : int;false : bool;");
+      expect(printTl([Int(3), Bool(4>6), Int(44-66), Bool( 10 === 5 + 5 )])).to.be.equal("3 : int;false : bool;-22 : int;true : bool;");
     });
   });
 });

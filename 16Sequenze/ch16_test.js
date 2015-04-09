@@ -68,10 +68,10 @@ describe('in chapter 16',function(){
       this.square = function(x){ return x * x; };
       this.divisibleBy3 = function(x){ return x % 3 === 0; };
     });
-    it.skip('should allow to map sequences over a function',function(){
+    it('should allow to map sequences over a function',function(){
       var squares = Seq.map(this.square,this.naturals);
       expect(Seq.nth(2,squares)).to.be.equal(4);
-      expect(Seq.nth(15,squares)).to.be.equal(361);
+      expect(Seq.nth(15,squares)).to.be.equal(225);
 
       var first10squares = Seq.map(this.square,this.first10);
       expect(Seq.nth(2,first10squares)).to.be.equal(4);
@@ -81,12 +81,12 @@ describe('in chapter 16',function(){
         expect(err).to.be.equal('empty sequence');
       }
     });
-    it.skip('should allow to filter sequences using a predicate',function(){
+    it('should allow to filter sequences using a predicate',function(){
       var multiplesOf3 = Seq.filter(this.divisibleBy3,this.naturals);
       expect(Seq.nth(2,multiplesOf3)).to.be.equal(6);
-      expect(Seq.nth(20,multiplesOf3)).to.be.equal(57);
+      expect(Seq.nth(19,multiplesOf3)).to.be.equal(57);
 
-      var first10multiplesOf3 = Seq.map(this.divisibleBy3,this.first10);
+      var first10multiplesOf3 = Seq.filter(this.divisibleBy3,this.first10);
       expect(Seq.nth(2,first10multiplesOf3)).to.be.equal(6);
       try {
         expect(Seq.nth(20,first10multiplesOf3)).to.fail;
@@ -94,9 +94,33 @@ describe('in chapter 16',function(){
         expect(err).to.be.equal('empty sequence');
       }
     });
-    it.skip('should allow to generate Fibonacci numbers',function(){
+    it('should allow to generate Fibonacci numbers',function(){
+      var fib = Seq.fibonacci();
+      expect(Seq.nth(5, fib)).to.be.equal(5);
+      expect(Seq.nth(0, fib)).to.be.equal(0);
+      expect(Seq.nth(50, fib)).to.be.equal(12586269025);
+      
+      var first10Fib = Seq.take(10,fib);     
+      expect(Seq.nth(5, fib)).to.be.equal(5);
+      expect(Seq.nth(0, fib)).to.be.equal(0);
+      try {
+        expect(Seq.nth(12,first10Fib)).to.fail;
+      } catch (err) {
+        expect(err).to.be.equal('empty sequence');
+      }      
     });
-    it.skip('should allow to generate prime numbers using a sieve of Eratosthenes',function(){
+    it('should allow to generate prime numbers using a sieve of Eratosthenes',function(){
+      var prime = Seq.eratosthenes();
+      expect(Seq.nth(2, prime)).to.be.equal(5);
+      expect(Seq.nth(15, prime)).to.be.equal(53);
+      
+      var first10prime = Seq.take(10, prime); 
+      expect(Seq.nth(2, first10prime)).to.be.equal(5);
+      try {
+        expect(Seq.nth(18, first10prime)).to.fail;
+      } catch (err) {
+        expect(err).to.be.equal('empty sequence');
+      }      
     });
   });
 });

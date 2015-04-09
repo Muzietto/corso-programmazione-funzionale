@@ -30,18 +30,11 @@ val it : int list = [10]
 //1
 var rmEven = function(coll){return _.filter(coll, function(val){return val % 2 != 0;});};
 
-console.log(rmEven([2, 5, 5, 87, 6, 100, 2]));
-
 //2
 var rmOddPos = function(coll){return _.filter(coll, function(val){return ((coll.indexOf(val) % 2) === 0);});};
 
-console.log(rmOddPos([20.4, 21.4, 22.4, 23.4, 24.4, 25.4, 26.4, 27.4]));
-
 //3
 var down = function(n, step){return (step < 0) ? _.range(n, 0, step) : _.range(n, 0, -step);};
-
-console.log(down(10,3));
-console.log(down(10,-29));
 
 /*
 generate a list of all int  0 to n
@@ -53,5 +46,3 @@ generate a list of all int  0 to n
 no tail recursion no accumulator, baby this is javascript
 */
 var upto = function(n){return _.range(0, n + 1);};
-
-console.log(upto(8));
