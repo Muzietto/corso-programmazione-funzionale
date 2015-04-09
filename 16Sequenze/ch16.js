@@ -41,11 +41,13 @@ var Seq = (function(){
     //return (ord === 0) ? first(thunk()) : nth(ord - 1,second(thunk()));
   }
 
+  // return the sequence with the first ord element skipped
   function skip(ord, thunk){
     'use strict';
     return (ord === 0) ? thunk : skip(ord - 1,second(thunk()));
   }
 
+  // take the first ord number of a sequence and make and array sequence with it
   function take(ord, thunk){
     'use strict';
     return aux(ord,[]);
@@ -54,12 +56,14 @@ var Seq = (function(){
     }
   }
 
+  // take the first member of the sequence and apply fun to it,
+  // than return the couple made with it and the map of the remaining sequence
   function map(fun, seq) {
     'use strict';
     return function() {
       return couple(
-        fun(first(seq())),
-        map(fun, second(seq()))
+        fun(nth(0, seq)),
+        map(fun, skip(1, seq))
       );     
     };
   }
@@ -67,42 +71,51 @@ var Seq = (function(){
   function filter(fun, seq) {
     'use strict';
     return function() {
-      var fst = first(seq());
+      var fst = nth(0, seq);
       if(fun(fst)) {
         return couple(
           fst,
-          filter(fun, second(seq()))
+          filter(fun, skip(1, seq))
         );   
       }
-      return filter(fun, second(seq()))();
+      return filter(fun, skip(1, seq))();
     };    
   }
 
-  function fib(now, next) {
+  function fib() {
     'use strict';
-    return function(){
-      if (arguments.length > 0) throw 'invalid operation';
-      return couple(
-        now,
-        fib(next, now + next)
-      );
-    };
+    function helper(now, next) {      
+      return function(){
+        if (arguments.length > 0) throw 'invalid operation';
+        return couple(
+          now,
+          helper(next, now + next)
+        );
+      };
+    }
+    return helper(0, 1);
   }
   
-  function erst(seq) {
+  function erst() {
     'use strict';
-    function sift(a, seq) {
-      return filter(function(x) { return x % a !== 0}, seq);
+    var oddNaturals = Seq.sequence(function(x){ return x + 1; },2);
+    function helper(seq) {      
+      // return a sequence made of all the number in the sequence seq that aren't multiple of the number a
+      function sift(a, seq) {
+        return filter(function(x) { return x % a !== 0; }, seq);
+      }
+      // return the first number of the sequence and a sequence without the multiple of the first number
+      return function() {
+        var fst = nth(0, seq);
+        return couple(
+          fst,
+          helper(sift(fst, skip(1, seq)))
+        );
+      };
     }
-    return function() {
-      var fst = nth(0, seq);
-      return couple(
-        fst,
-        erst(sift(fst, skip(1, seq)))
-      );
-    }
+    return helper(oddNaturals);
   }
-  
+
   return {
     sequence : sequence,
     skip : skip,

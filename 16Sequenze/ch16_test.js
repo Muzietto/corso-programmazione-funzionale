@@ -64,9 +64,7 @@ describe('in chapter 16',function(){
   describe('various apt operations on sequences',function(){
     beforeEach(function(){
       this.naturals = Seq.sequence(function(x){ return x + 1; },0);
-      this.oddNaturals = Seq.sequence(function(x){ return x + 1; },2);
       this.first10 = Seq.take(10,this.naturals);
-      this.first10Odd = Seq.take(10,this.oddNaturals);
       this.square = function(x){ return x * x; };
       this.divisibleBy3 = function(x){ return x % 3 === 0; };
     });
@@ -97,7 +95,7 @@ describe('in chapter 16',function(){
       }
     });
     it('should allow to generate Fibonacci numbers',function(){
-      var fib = Seq.fibonacci(0, 1);
+      var fib = Seq.fibonacci();
       expect(Seq.nth(5, fib)).to.be.equal(5);
       expect(Seq.nth(0, fib)).to.be.equal(0);
       expect(Seq.nth(50, fib)).to.be.equal(12586269025);
@@ -112,19 +110,18 @@ describe('in chapter 16',function(){
       }      
     });
     it('should allow to generate prime numbers using a sieve of Eratosthenes',function(){
-      //this.timeout(30000);
-      var prime = Seq.eratosthenes(this.oddNaturals);
+      var prime = Seq.eratosthenes();
       expect(Seq.nth(2, prime)).to.be.equal(5);
       expect(Seq.nth(15, prime)).to.be.equal(53);
       
-      var first10prime = Seq.eratosthenes(this.first10Odd);
+      var first10prime = Seq.take(10, prime); 
       expect(Seq.nth(2, first10prime)).to.be.equal(5);
       try {
-        expect(Seq.nth(18,first10prime)).to.fail;
+        expect(Seq.nth(18, first10prime)).to.fail;
       } catch (err) {
         expect(err).to.be.equal('empty sequence');
-      }
-      
+      }      
     });
   });
 });
+
